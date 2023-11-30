@@ -7,4 +7,4 @@
 [https://docs.google.com/spreadsheets/d/1HbOLSip40mFMSdKiMv3g7pmphqAmEYHMH3U00kooZb0/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1AZmtXWbgHWC4EonEzxC1CNiBUtQO5Oj1tRW7u4FsWqc/edit?usp=sharing)
 
 ## GDOC:  
-[https://docs.google.com/document/d/14P5nHMzxT79Rkc1hIHBp4UZPnyM1IrBZa7obdOBW-U4/edit?usp=sharing](https://docs.google.com/document/d/1MjyWbshX_ClhXDc5aBEHv5OGmDZ-aBC-aXvWWABd-x8/edit?usp=sharing)https://docs.google.com/document/d/1MjyWbshX_ClhXDc5aBEHv5OGmDZ-aBC-aXvWWABd-x8/edit?usp=sharing
+https://docs.google.com/document/d/1MjyWbshX_ClhXDc5aBEHv5OGmDZ-aBC-aXvWWABd-x8/edit?usp=sharing
