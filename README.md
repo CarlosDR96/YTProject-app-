@@ -1,4 +1,4 @@
-# YTProject-app-
+# YTProject-App
 
 ## Trello:  
 [https://trello.com/invite/b/LmIF2lHI/ATTI23943ef2ac12d1d87f7d3ff77077532eABAFEDD7/gameproject](https://trello.com/b/ToHmRSB9/ytprojectapp)
