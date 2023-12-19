@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import NavBar from '.components/NavBar'; // Adjust the import path based on your file structure
+import NavBar from '../components/NavBar';
+
 
 const HomeScreen = ({ navigation }) => {
     return (
