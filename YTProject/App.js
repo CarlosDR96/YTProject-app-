@@ -1,12 +1,17 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import Card from './components/Card';
+import NavigationComponent from './components/NavigationComponent';
 
 export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.header}></View>
-      <View style={styles.map}></View>
+      <View styleNav={styles.map}>
+        <NavigationComponent
+          
+        />
+      </View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Card
           titulo="Título de la Carta 1"
