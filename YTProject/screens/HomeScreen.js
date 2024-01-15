@@ -5,7 +5,9 @@ import NavigationComponent from '../components/NavigationComponent';
 import Card from '../components/Card'
 import Tags from '../components/Tags';
 import MapView from 'react-native-maps';
-
+import Header from '../components/Header'; // Importa el componente Header
+import logo from '../img/SezarBlueLogo.png';
+import MapComponent from '../components/MapComponent';
 
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
@@ -14,11 +16,17 @@ const HomeScreen = ({ navigation }) => {
     setViewType((prevType) => (prevType === 'Map' ? 'List' : 'Map')); // Cambiar entre 'Map' y 'List'
   };
     return (
-        <View style={styles.container}>
-          <View style={styles.header}></View>
-          <View style={styles.map}>
-            <NavigationComponent onToggle={toggleViewType} />
-          </View>
+      <View style={styles.container}>
+      <View style={styles.header}>
+        <Header imageSource={logo} />
+      </View>
+      <View style={styles.map}>
+        <NavBar2 onToggle={toggleViewType} />
+      </View>
+      <View style={{flex: 1}}>
+        {viewType === 'Map' ? (
+          <MapComponent /> // Usa el componente MapComponent
+        ) : (
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <Card
               titulo={<Text style={styles.whiteText}>"Título de la Carta 1"</Text>}
@@ -51,9 +59,11 @@ const HomeScreen = ({ navigation }) => {
               imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"
             />
             {/* Agrega más cartas según sea necesario */}
-          </ScrollView>
-          <View style={styles.footer}></View>
-        </View>
+            </ScrollView>
+    )}
+  </View>
+  <View style={styles.footer}></View>
+</View>
       );
     }
     
