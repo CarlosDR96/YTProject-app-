@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import NavBar from '../components/NavBar2';
+import NavBar2 from '../components/NavBar2';
+import NavigationComponent from '../components/NavigationComponent';
 import Card from '../components/Card'
 import Tags from '../components/Tags';
 import MapView from 'react-native-maps';
-
 
 
 const HomeScreen = ({ navigation }) => {
@@ -17,7 +17,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.container}>
           <View style={styles.header}></View>
           <View style={styles.map}>
-            <NavBar onToggle={toggleViewType} />
+            <NavigationComponent onToggle={toggleViewType} />
           </View>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <Card

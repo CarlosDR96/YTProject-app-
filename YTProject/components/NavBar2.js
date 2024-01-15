@@ -3,7 +3,7 @@ import { View, Image, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import SwitchSelector from 'react-native-switch-selector';
 
-const NavBar = ({ onToggle }) => {
+const NavBar2 = ({ onToggle }) => {
   // Opciones para el interruptor (Mapa y Lista)
   const options = [
     { label: 'Map', value: 'Map' },
