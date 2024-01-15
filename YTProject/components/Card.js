@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
+import Tags from './Tags';
 
 const Card = ({ titulo, tags, descripcion, imagenFuente }) => {
   return (
     <View style={styles.container}>
       <View style={styles.contenidoContainer}>
         <Text style={styles.titulo}>{titulo}</Text>
-        <Text style={styles.tags}>{tags}</Text>
+        <Tags tags={tags} />
         <Text style={styles.descripcion}>{descripcion}</Text>
       </View>
       <View style={styles.imagenContainer}>
@@ -22,8 +23,7 @@ const cardHeight = height * 0.2; // Ajusta este valor según tus necesidades
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: '#ccc',
+    backgroundColor: '#262626',
     borderRadius: 8,
     margin: 10,
     overflow: 'hidden',
@@ -46,13 +46,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
-  },
-  tags: {
-    color: 'gray',
-    marginBottom: 5,
+    color: 'white',
   },
   descripcion: {
     fontSize: 16,
+    color: 'white',
   },
 });
 
