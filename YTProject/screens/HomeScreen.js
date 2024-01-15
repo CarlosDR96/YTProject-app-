@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import NavBar from '../components/NavBar';
+import NavBar from '../components/NavBar2';
 import Card from '../components/Card'
 import Tags from '../components/Tags';
+import MapView from 'react-native-maps';
+
 
 
 const HomeScreen = ({ navigation }) => {
+  const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
+
+  const toggleViewType = () => {
+    setViewType((prevType) => (prevType === 'Map' ? 'List' : 'Map')); // Cambiar entre 'Map' y 'List'
+  };
     return (
         <View style={styles.container}>
           <View style={styles.header}></View>
-          <View style={styles.map}></View>
+          <View style={styles.map}>
+            <NavBar onToggle={toggleViewType} />
+          </View>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <Card
               titulo={<Text style={styles.whiteText}>"Título de la Carta 1"</Text>}
@@ -63,7 +72,7 @@ const HomeScreen = ({ navigation }) => {
         height: '20%',
       },
       map: {
-        backgroundColor: 'blue',
+        backgroundColor: '#3F3F3F',
         height: '10%',
       },
       footer: {
