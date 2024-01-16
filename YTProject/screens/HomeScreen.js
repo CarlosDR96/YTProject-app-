@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import NavBar2 from '../components/NavBar2';
 import NavigationComponent from '../components/NavigationComponent';
+import NavBar from '../components/NavBar';
 import Card from '../components/Card'
 import Tags from '../components/Tags';
 import MapView from 'react-native-maps';
+import styles from '../styles/HomeScreenStyles'; // Adjust the import path as necessary
 
 
 const HomeScreen = ({ navigation }) => {
@@ -16,6 +18,7 @@ const HomeScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
           <View style={styles.header}></View>
+
           <View style={styles.map}>
             <NavigationComponent onToggle={toggleViewType} />
           </View>
@@ -48,44 +51,16 @@ const HomeScreen = ({ navigation }) => {
               titulo={<Text style={styles.whiteText}>"Título de la Carta 5"</Text>}
               tags="#React #Native #Expo"
               descripcion={<Text style={styles.whiteText}>"Descripción de la quinta carta. Más detalles sobre el contenido."</Text>}
+          
               imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"
             />
             {/* Agrega más cartas según sea necesario */}
           </ScrollView>
           <View style={styles.footer}></View>
+          <NavBar NavBar navigation={navigation} />
         </View>
       );
     }
-    
-    
-    const styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        backgroundColor: '#3F3F3F',
-      },
-      scrollContainer: {
-        alignItems: 'center',
-        paddingVertical: 20,
-      },
-      header: {
-        backgroundColor: 'red',
-        height: '20%',
-      },
-      map: {
-        backgroundColor: '#3F3F3F',
-        height: '10%',
-      },
-      footer: {
-        backgroundColor: 'pink',
-        height: '10%',
-      },
-      whiteText: {
-        color: 'white',
-      },
-      orangeText: {
-        color: 'orange',
-      }
-    });
     
 
 export default HomeScreen;
