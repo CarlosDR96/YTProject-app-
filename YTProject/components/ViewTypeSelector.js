@@ -3,7 +3,7 @@ import { View, Image, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import SwitchSelector from 'react-native-switch-selector';
 
-const NavBar2 = ({ onToggle }) => {
+const ViewTypeSelector = ({ onToggle }) => {
   // Opciones para el interruptor (Mapa y Lista)
   const options = [
     { label: 'Map', value: 'Map' },
@@ -11,7 +11,7 @@ const NavBar2 = ({ onToggle }) => {
   ];
 
   return (
-    <View style={styles.navBar}>
+    <View style={styles.selector}>
       {/* Imagen de la lupa a la izquierda */}
       <Image source={require('../img/SearchIcon.png')} style={styles.icon} />
 
@@ -20,8 +20,8 @@ const NavBar2 = ({ onToggle }) => {
         options={options}
         initial={0}
         onPress={onToggle}
-        buttonColor="lightgray"
-        borderColor="#fff"
+        buttonColor='lightgray' // Cambia el color del botón al mismo color que el fondo
+        hasPadding // Añade un pequeño margen alrededor del botón
         textStyle={styles.switchText}
         style={styles.switchContainer}
       />
@@ -33,7 +33,7 @@ const NavBar2 = ({ onToggle }) => {
 };
 
 const styles = StyleSheet.create({
-  navBar: {
+  selector: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center', // Centrar verticalmente las imágenes
@@ -49,11 +49,12 @@ const styles = StyleSheet.create({
   },
   switchContainer: {
     flex: 0.6,
-    width: 80,
+    width: 90,
   },
   switchText: {
-    color: 'black',
+    color: 'black', // Cambia el color del texto a negro
+    fontSize: 16, // Aumenta el tamaño del texto
   },
 });
 
-export default NavBar2;
+export default ViewTypeSelector;

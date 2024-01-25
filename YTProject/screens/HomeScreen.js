@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import NavBar2 from '../components/NavBar2';
+import ViewTypeSelector from '../components/ViewTypeSelector';
 import NavigationComponent from '../components/NavigationComponent';
 import Card from '../components/Card'
 import Tags from '../components/Tags';
@@ -21,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
         <Header imageSource={logo} />
       </View>
       <View style={styles.map}>
-        <NavBar2 onToggle={toggleViewType} />
+        <ViewTypeSelector onToggle={toggleViewType} />
       </View>
       <View style={{flex: 1}}>
         {viewType === 'Map' ? (
@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }) => {
             />
             <Card
               titulo={<Text style={styles.whiteText}>"Título de la Carta 3"</Text>}
-              tags="#React #Native #Expo"
+              tags="#React #Nativeeeeeee #Expo"
               descripcion={<Text style={styles.whiteText}>"Descripción de la tercera carta. Más detalles sobre el contenido."</Text>}
               imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"
             />
