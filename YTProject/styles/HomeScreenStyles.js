@@ -3,14 +3,13 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#3f3f3f',
+    backgroundColor: '#000000',
   },
   scrollContainer: {
     alignItems: 'center',
     paddingVertical: 20,
   },
   header: {
-    backgroundColor: 'red',
     height: '20%',
   },
   map: {
