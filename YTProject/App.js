@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash" headerMode="none">
+      <Stack.Navigator initialRouteName="Splash" headerShown="false">
         {/* SplashScreen se mostrará inicialmente */}
         <Stack.Screen name="Splash" component={SplashScreen} />
 

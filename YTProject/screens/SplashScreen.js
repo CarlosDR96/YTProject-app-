@@ -26,8 +26,9 @@ const SplashScreen = () => {
 
     const timer = setTimeout(() => {
       // Navegar a la pantalla Home después de x segundos
+      console.log('go to home')
       navigation.navigate('Home');
-    }, 600000); // segundos en milisegundos
+    }, 1000); // segundos en milisegundos
 
     return () => clearTimeout(timer);
   }, [navigation]);
