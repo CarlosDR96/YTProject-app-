@@ -9,6 +9,11 @@ const NavigationComponent = ({ map = 'MAPA', list = 'LLISTA' }) => {
   const handleSearchPress = () => {
     console.log('Presionaste Buscar');
     // Lógica para el botón de búsqueda
+  
+  
+  
+  
+  
   };
 
   const handleFilterPress = () => {
