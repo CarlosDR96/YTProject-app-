@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import Tags from './Tags';
 
 const Card = ({ titulo, tags, descripcion, imagenFuente }) => {
@@ -7,8 +7,16 @@ const Card = ({ titulo, tags, descripcion, imagenFuente }) => {
     <View style={styles.container}>
       <View style={styles.contenidoContainer}>
         <Text style={styles.titulo}>{titulo}</Text>
-        <Tags tags={tags} />
-        <Text style={styles.descripcion}>{descripcion}</Text>
+        {/* Envuelve Tags con ScrollView horizontal */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <Tags tags={tags} />
+        </ScrollView>
+        {/* Contenedor adicional para la descripción */}
+        <View style={styles.descripcionContainer}>
+          <Text style={styles.descripcion} numberOfLines={3} ellipsizeMode="tail">
+            {descripcion}
+          </Text>
+        </View>
       </View>
       <View style={styles.imagenContainer}>
         <Image style={styles.imagen} source={{ uri: imagenFuente }} />
@@ -17,8 +25,8 @@ const Card = ({ titulo, tags, descripcion, imagenFuente }) => {
   );
 };
 
-const { height } = Dimensions.get('window');
-const cardHeight = height * 0.2; // Ajusta este valor según tus necesidades
+const { width } = Dimensions.get('window');
+const cardWidth = width * 0.5; // Ajusta este valor según tus necesidades
 
 const styles = StyleSheet.create({
   container: {
@@ -30,13 +38,16 @@ const styles = StyleSheet.create({
   },
   imagenContainer: {
     width: '30%',
+    height: cardWidth, // La altura es igual al ancho
+    justifyContent: 'center', // Centra verticalmente la imagen
+    overflow: 'hidden', // Para asegurarse de que no sobresalga del contenedor
   },
   imagen: {
-    flex: 1,
-    width: '100%',
+    width: '95%',
+    aspectRatio: 1, // Hace que la imagen sea cuadrada
     resizeMode: 'cover',
     borderRadius: 8,
-    margin: 5,
+    marginRight: 2, // Margen de 1 píxel a la derecha
   },
   contenidoContainer: {
     width: '70%',
@@ -48,8 +59,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: 'white',
   },
+  descripcionContainer: {
+    flex: 1, // Para que la descripción ocupe el espacio disponible
+  },
   descripcion: {
-    fontSize: 16,
+    fontSize: 14,
     color: 'white',
   },
 });

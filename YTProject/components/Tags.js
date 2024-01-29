@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   },
   tagText: {
     color: 'white',
+    fontSize: 10, // Tamaño de la letra de los tags
   },
 });
 
