@@ -18,14 +18,19 @@ const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
 
 
-  const toggleViewType = () => {
+ /* const toggleViewType = () => {
     setViewType((prevType) => (prevType === 'Map' ? 'List' : 'Map')); // Cambiar entre 'Map' y 'List'
         
-  };
+  };*/
 
   const onPress = ({navigation }) => {
     navigation.navigate('Details');
     console.log('card clicked');
+  };
+  const toggleViewType = (newType) => {
+    if (newType !== viewType) {
+      setViewType(newType);
+    }
   };
 
   return  (
@@ -34,7 +39,7 @@ const HomeScreen = ({ navigation }) => {
         <Header imageSource={logo} />
       </View>
       <View style={styles.map}>
-        <ViewTypeSelector onToggle={toggleViewType} />
+        <ViewTypeSelector onToggle={toggleViewType} selected={viewType}/>
       </View>
 
       <View style={{flex: 1}}>
