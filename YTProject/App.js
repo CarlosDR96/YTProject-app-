@@ -4,6 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/HomeScreen';
 import SplashScreen from './screens/SplashScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import DetailsScreen from './screens/DetailsScreen';
+import AboutScreen from './screens/AboutScreen';
+
 
 const Stack = createStackNavigator();
 
@@ -16,6 +20,10 @@ const App = () => {
 
         {/* HomeScreen se mostrará después de 10 segundos */}
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="About" component={AboutScreen} />
+        {/*<Stack.Screen name="About" component={AboutScreen} />*/}
       </Stack.Navigator>
     </NavigationContainer>
   );
