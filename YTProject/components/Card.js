@@ -6,17 +6,19 @@ const Card = ({ titulo, tags, descripcion, imagenFuente }) => {
   return (
     <View style={styles.container}>
       <View style={styles.contenidoContainer}>
-        <Text style={styles.titulo}>{titulo}</Text>
-        {/* Envuelve Tags con ScrollView horizontal */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <Tags tags={tags} />
-        </ScrollView>
-        {/* Contenedor adicional para la descripción */}
-        <View style={styles.descripcionContainer}>
-          <Text style={styles.descripcion} numberOfLines={3} ellipsizeMode="tail">
-            {descripcion}
-          </Text>
-        </View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.titulo} numberOfLines={3} ellipsizeMode="tail">{titulo}</Text>
+          </View>
+          {/* Envuelve Tags con ScrollView horizontal */}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <Tags tags={tags} />
+          </ScrollView>
+          {/* Contenedor adicional para la descripción */}
+          <View style={styles.descripcionContainer}>
+            <Text style={styles.descripcion} numberOfLines={4} ellipsizeMode="tail">
+              {descripcion}
+            </Text>
+          </View>
       </View>
       <View style={styles.imagenContainer}>
         <Image style={styles.imagen} source={{ uri: imagenFuente }} />
@@ -26,7 +28,7 @@ const Card = ({ titulo, tags, descripcion, imagenFuente }) => {
 };
 
 const { width } = Dimensions.get('window');
-const cardWidth = width * 0.5; // Ajusta este valor según tus necesidades
+const cardWidth = width * 0.3; // Ajusta este valor según tus necesidades
 
 const styles = StyleSheet.create({
   container: {
@@ -41,6 +43,9 @@ const styles = StyleSheet.create({
     height: cardWidth, // La altura es igual al ancho
     justifyContent: 'center', // Centra verticalmente la imagen
     overflow: 'hidden', // Para asegurarse de que no sobresalga del contenedor
+   // backgroundColor: 'green',
+    marginTop: '20%',
+    marginBottom: '1%',
   },
   imagen: {
     width: '95%',
@@ -48,10 +53,16 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderRadius: 8,
     marginRight: 2, // Margen de 1 píxel a la derecha
+   // marginTop: 60,
   },
   contenidoContainer: {
     width: '70%',
     padding: 10,
+ //   backgroundColor: 'red',
+  },
+  titleContainer: {
+    width: '150%',
+
   },
   titulo: {
     fontSize: 18,

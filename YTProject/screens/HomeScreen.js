@@ -17,12 +17,6 @@ import { useRoute } from '@react-navigation/native';
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
 
-
- /* const toggleViewType = () => {
-    setViewType((prevType) => (prevType === 'Map' ? 'List' : 'Map')); // Cambiar entre 'Map' y 'List'
-        
-  };*/
-
   const onPress = ({navigation }) => {
     navigation.navigate('Details');
     console.log('card clicked');
@@ -51,31 +45,31 @@ const HomeScreen = ({ navigation }) => {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                <TouchableOpacity onPress={() => onPress({navigation })}>
               <Card
-                titulo={<Text style={styles.whiteText}>"Título de la Carta 1"</Text>}
+                titulo={<Text style={styles.whiteText}>Probando El RESTAURANTE MÁS ANTIGUO del MUNDO - ABIERTO EN 1702</Text>}
                 tags="#React #Native #Expo"
-                descripcion={<Text style={styles.whiteText}>"Descripción de la carta. Aquí puedes agregar más detalles sobre el contenido. Esta es una descripción más larga para probar la capacidad de desplazamiento en la carta."</Text>}
-                imagenFuente="https://www.revistainteriores.es/uploads/s1/23/67/55/5/los-25-restaurantes-con-mejor-diseno-de-barcelona.jpeg"
+                descripcion={<Text style={styles.whiteText}>Esto está muy debatido y rebatido... Parece que se quemaron los documentos en la guerra... pero este lugar aseguran que este restaurante lleva abierto desde 1702!!! Su comida debe ser INCREIBLE si ha permanecido durante tantos años abierto...</Text>}
+                imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"
               />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => onPress({navigation })}>
               <Card
-                titulo={<Text style={styles.whiteText}>"Título de la Carta 2"</Text>}
-                tags="#React #Native #Expo"
+                titulo={<Text style={styles.whiteText}>El RESTAURANTE de PUEBLO más GOURMET que encontré en el PAÍS VASCOoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo!!!</Text>}
+                tags="#React #Native #Expo #tag #tag #tag #taaaaag #tag"
                 descripcion={<Text style={styles.whiteText}>"Descripción de la segunda carta. Más detalles sobre el contenido."</Text>}
                 imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"
               />
                </TouchableOpacity>
                <TouchableOpacity onPress={() => onPress({navigation })}>
               <Card
-                titulo={<Text style={styles.whiteText}>"Título de la Carta 3"</Text>}
+                titulo={<Text style={styles.whiteText}>he DESCUBIERTO este ASADOR DE PUEBLO en CARRETERA: ABSOLUTAMENTE DELICIOSO!!!</Text>}
                 tags="#React #Nativeeeeeee #Expo"
-                descripcion={<Text style={styles.whiteText}>"Descripción de la tercera carta. Más detalles sobre el contenido."</Text>}
+                descripcion={<Text style={styles.whiteText}>Pues esto es la FUSIÓN de dos temáticas que ME ENCANTAN: RESTAURANTE DE PUEBLO y RESTAURANTE DE CARRETERA todo en un mismo lugar. Creo que el video de hoy no tiene desperdicio: asador tradicional con lechazo autóctono a la leña y a la brasa</Text>}
                 imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"
               />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => onPress({navigation })}>
               <Card
-                titulo={<Text style={styles.whiteText}>"Título de la Carta 4"</Text>}
+                titulo={<Text style={styles.whiteText}>Probando El RESTAURANTE MÁS ANTIGUO del MUNDO - ABIERTO EN 1702</Text>}
                 tags="#React #Native #Expo"
                 descripcion={<Text style={styles.whiteText}>"Descripción de la cuarta carta. Más detalles sobre el contenido."</Text>}
                 imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"
@@ -83,7 +77,7 @@ const HomeScreen = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => onPress({navigation })}>
               <Card
-                titulo={<Text style={styles.whiteText}>"Título de la Carta 5"</Text>}
+                titulo={<Text style={styles.whiteText}>Probando El RESTAURANTE MÁS ANTIGUO del MUNDO - ABIERTO EN 1702</Text>}
                 tags="#React #Native #Expo"
                 descripcion={<Text style={styles.whiteText}>"Descripción de la quinta carta. Más detalles sobre el contenido."</Text>}
             
