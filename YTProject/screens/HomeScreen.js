@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import ViewTypeSelector from '../components/ViewTypeSelector';
 import NavigationComponent from '../components/NavigationComponent';
@@ -13,6 +13,8 @@ import styles from '../styles/HomeScreenStyles'; // Adjust the import path as ne
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
+import { db } from '../firebaseConfig';
+import { collection, getDocs } from 'firebase/firestore';
 
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
@@ -26,6 +28,26 @@ const HomeScreen = ({ navigation }) => {
       setViewType(newType);
     }
   };
+
+  useEffect(() => { // Funció que es crida al començar. Ve a ser un OnCreate d'Android/start()
+    // Función para obtener todos los usuarios
+    const fetchUsers = async () => {
+      try {
+        console.log(db);
+  const usersCol = collection(db, 'Users'); // Accede a la colección 'Users'
+  const userSnapshot = await getDocs(usersCol); // Obtiene todos los documentos
+  const userList = userSnapshot.docs.map(doc => doc.data()); // Mapea cada documento a su data
+  console.log(userList[0].Nom); // Imprime los datos obtenidos
+  
+    
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    fetchUsers(); // Llama a la función al inicio
+  }, []);
+
 
   return  (
     <View style={styles.container}>
