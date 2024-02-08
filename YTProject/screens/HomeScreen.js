@@ -15,9 +15,14 @@ import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import { db } from '../firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
+import TouchableCard from '../components/TouchableCard';
+
 
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
+  const [videosList, setVideosList] = useState([]);
+  const [refresh, setRefresh] = useState("");
+
 
   const onPress = ({navigation }) => {
     navigation.navigate('Details');
@@ -31,13 +36,17 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => { // Funció que es crida al començar. Ve a ser un OnCreate d'Android/start()
     // Función para obtener todos los usuarios
-    const fetchUsers = async () => {
+    const fetchVideos = async () => {
       try {
         console.log(db);
-  const usersCol = collection(db, 'Users'); // Accede a la colección 'Users'
-  const userSnapshot = await getDocs(usersCol); // Obtiene todos los documentos
-  const userList = userSnapshot.docs.map(doc => doc.data()); // Mapea cada documento a su data
-  console.log(userList[0].Nom); // Imprime los datos obtenidos
+        const videosCol = collection(db, 'Videos'); // Accede a la colección 'Users'
+        const videoSnapshot = await getDocs(videosCol); // Obtiene todos los documentos
+        const videosListData = videoSnapshot.docs.map(doc => doc.data()); // Mapea cada documento a su data
+        setVideosList(videosListData);
+        console.log(videosList[1].Title)
+        setRefresh(" ");
+  
+ // console.log(userList[0].Nom); // Imprime los datos obtenidos
   
     
       } catch (error) {
@@ -45,7 +54,7 @@ const HomeScreen = ({ navigation }) => {
       }
     };
   
-    fetchUsers(); // Llama a la función al inicio
+    fetchVideos(); // Llama a la función al inicio
   }, []);
 
 
@@ -65,48 +74,26 @@ const HomeScreen = ({ navigation }) => {
           ) : 
           (
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-               <TouchableOpacity onPress={() => onPress({navigation })}>
-              <Card
-                titulo={<Text style={styles.whiteText}>Probando El RESTAURANTE MÁS ANTIGUO del MUNDO - ABIERTO EN 1702</Text>}
-                tags="#React #Native #Expo"
-                descripcion={<Text style={styles.whiteText}>Esto está muy debatido y rebatido... Parece que se quemaron los documentos en la guerra... pero este lugar aseguran que este restaurante lleva abierto desde 1702!!! Su comida debe ser INCREIBLE si ha permanecido durante tantos años abierto...</Text>}
-                imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"
-              />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => onPress({navigation })}>
-              <Card
-                titulo={<Text style={styles.whiteText}>El RESTAURANTE de PUEBLO más GOURMET que encontré en el PAÍS VASCOoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo!!!</Text>}
-                tags="#React #Native #Expo #tag #tag #tag #taaaaag #tag"
-                descripcion={<Text style={styles.whiteText}>"Descripción de la segunda carta. Más detalles sobre el contenido."</Text>}
-                imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"
-              />
-               </TouchableOpacity>
-               <TouchableOpacity onPress={() => onPress({navigation })}>
-              <Card
-                titulo={<Text style={styles.whiteText}>he DESCUBIERTO este ASADOR DE PUEBLO en CARRETERA: ABSOLUTAMENTE DELICIOSO!!!</Text>}
-                tags="#React #Nativeeeeeee #Expo"
-                descripcion={<Text style={styles.whiteText}>Pues esto es la FUSIÓN de dos temáticas que ME ENCANTAN: RESTAURANTE DE PUEBLO y RESTAURANTE DE CARRETERA todo en un mismo lugar. Creo que el video de hoy no tiene desperdicio: asador tradicional con lechazo autóctono a la leña y a la brasa</Text>}
-                imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"
-              />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => onPress({navigation })}>
-              <Card
-                titulo={<Text style={styles.whiteText}>Probando El RESTAURANTE MÁS ANTIGUO del MUNDO - ABIERTO EN 1702</Text>}
-                tags="#React #Native #Expo"
-                descripcion={<Text style={styles.whiteText}>"Descripción de la cuarta carta. Más detalles sobre el contenido."</Text>}
-                imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"
-              />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => onPress({navigation })}>
-              <Card
-                titulo={<Text style={styles.whiteText}>Probando El RESTAURANTE MÁS ANTIGUO del MUNDO - ABIERTO EN 1702</Text>}
-                tags="#React #Native #Expo"
-                descripcion={<Text style={styles.whiteText}>"Descripción de la quinta carta. Más detalles sobre el contenido."</Text>}
-            
-                imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"
-              />
-              </TouchableOpacity>
-            {/* Agrega más cartas según sea necesario */}
+              {videosList ? (
+                videosList.map((item, index) => (
+                  <TouchableCard  onPress={() => onPress({ navigation })} key={index} title={item.Title} tags={item.Tags}
+                  desc={item.Address} sourceImg="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"/>
+                ))
+              ) : (
+                // Mostrar un mensaje de carga o un indicador de vacío
+                <Text style={styles.titulo}>Cargando...</Text>
+              )}
+            {/*  {videosList ? (
+                videosList.map((item, index) => (
+                  <TouchableOpacity onPress={() => onPress({navigation })}>
+                    <Card key={index} titulo={item.Title} tags={item.Tags}
+                    descripcion={item.Address} imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"/>
+                </TouchableOpacity>
+                ))
+              ) : (
+                // Mostrar un mensaje de carga o un indicador de vacío
+                <Text style={styles.titulo}>Cargando...</Text>
+              )}*/}
             </ScrollView>
           )
         }
