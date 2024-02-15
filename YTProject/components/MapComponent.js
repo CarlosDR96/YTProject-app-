@@ -1,22 +1,31 @@
 import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker} from 'react-native-maps';
 
 
 const { width, height } = Dimensions.get('window');
 
-const MapComponent = () => {
+const MapComponent = ({locations}) => {
+  console.log(locations[1]);
   return (
     <View style={styles.mapContainer}>
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
+            latitude: 40.4637,
+            longitude: -3.7492,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
-        />
+          >
+          {locations.map((location, index) => (
+            <Marker
+              key={index}
+              coordinate={{ latitude: location.latitude, longitude: location.longitude }}
+              title={`Marker ${index + 1}`}
+            />
+          ))}
+      </MapView>
       </View>
   );
 };
