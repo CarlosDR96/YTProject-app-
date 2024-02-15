@@ -74,7 +74,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={{flex: 1}}>
       {viewType === 'Map' && videosList && videosList.length > 0 ? 
           (
-            <MapComponent videosList={videosList} /> // Usa el componente MapComponent
+            <MapComponent videosList={videosList} navigation={navigation}/> // Usa el componente MapComponent
           ) : 
           (
             <ScrollView contentContainerStyle={styles.scrollContainer}>

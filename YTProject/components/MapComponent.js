@@ -1,13 +1,19 @@
 import React, { useEffect, useState }from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker} from 'react-native-maps';
 
 
 const { width, height } = Dimensions.get('window');
 
-const MapComponent = ({videosList}) => {
+const MapComponent = ({videosList, navigation}) => {
   const [locationsList, setLocationsList] = useState([]);
   console.log("Title " + videosList[0].Title);
+
+  const onPress = ({navigation }) => {
+    navigation.navigate('Details');
+    console.log('card clicked');
+  };
 
   useEffect(() => {
     const filteredLocations = videosList
@@ -33,6 +39,10 @@ const MapComponent = ({videosList}) => {
               key={index}
               coordinate={{ latitude: location.latitude, longitude: location.longitude }}
               title={videosList[index].Title}
+              onPress={() => {
+                // Navegar a otra pantalla aquí
+                navigation.navigate('Details', { videoId: videosList[index].id });
+              }}
             />
           ))}
       </MapView>
