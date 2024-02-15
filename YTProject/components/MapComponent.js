@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState }from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import MapView, { Marker} from 'react-native-maps';
 
 
 const { width, height } = Dimensions.get('window');
 
-const MapComponent = ({locations}) => {
-  console.log(locations[1]);
+const MapComponent = ({videosList}) => {
+  const [locationsList, setLocationsList] = useState([]);
+
+  useEffect(() => {
+    const filteredLocations = videosList
+      .filter((video) => video.Geopoint !== null && video.Geopoint !== undefined)
+      .map((video) => video.Geopoint);
+
+    setLocationsList(filteredLocations);
+  }, [videosList]);
+
   return (
     <View style={styles.mapContainer}>
         <MapView
@@ -18,7 +27,7 @@ const MapComponent = ({locations}) => {
             longitudeDelta: 0.0421,
           }}
           >
-          {locations.map((location, index) => (
+          {locationsList.map((location, index) => (
             <Marker
               key={index}
               coordinate={{ latitude: location.latitude, longitude: location.longitude }}

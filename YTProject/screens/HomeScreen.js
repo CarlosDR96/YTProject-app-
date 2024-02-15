@@ -22,7 +22,6 @@ const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
   const [videosList, setVideosList] = useState([]);
   const [tagsList, setTagsList] = useState([]);
-  const [locationsList, setLocations] = useState([]);
   const [refresh, setRefresh] = useState("");
 
 
@@ -36,16 +35,7 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  const loadLocations = () => {
-    videosList.forEach((video) => {
-      if (video.Geopoint) {
-        console.log("Video geopoint " + video.Geopoint);
-        setLocations((prevLocation) => [...prevLocation, video.Geopoint]);
-      }
-      console.log(locationsList);
-    });
-  };
-
+  
   useEffect(() => { // Funció que es crida al començar. Ve a ser un OnCreate d'Android/start()
     // Función para obtener todos los usuarios
     const fetchVideos = async () => {
@@ -55,31 +45,13 @@ const HomeScreen = ({ navigation }) => {
         const videoSnapshot = await getDocs(videosCol); // Obtiene todos los documentos
         const videosListData = videoSnapshot.docs.map(doc => doc.data()); // Mapea cada documento a su data
         setVideosList(videosListData);
-      //  console.log("Geopoint: " + videosList[0].Geopoint)
-
-     //  loadLocations();
-
-        //console.log("Loc 0 " + locationsList[0]);
-
-        videosListData.forEach((video) => {
-          if (video.Geopoint !== null && video.Geopoint !== undefined) {
-         //   console.log("Video geopoint " + video.Geopoint[0]);
-            setLocations((prevLocation) => [...prevLocation, video.Geopoint]);
-          }
-         // console.log(locationsList);
-        });
-
-      //  console.log("Loc list: " + locationsList);
+  
 
         const tagsCol = collection(db, "Tags");
         const tagsSnapshot = await getDocs(tagsCol);
         const tagsListData = tagsSnapshot.docs.map(doc => doc.data());
         setTagsList(tagsListData[0].Values);
-        setRefresh(" ");
-       // console.log(tagsList)
-  
- // console.log(userList[0].Nom); // Imprime los datos obtenidos
-  
+        setRefresh(" ");  
     
       } catch (error) {
         console.log(error);
@@ -100,9 +72,9 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <View style={{flex: 1}}>
-      {viewType === 'Map' && locationsList && locationsList.length > 0 ? 
+      {viewType === 'Map' && videosList && videosList.length > 0 ? 
           (
-            <MapComponent locations={locationsList} /> // Usa el componente MapComponent
+            <MapComponent videosList={videosList} /> // Usa el componente MapComponent
           ) : 
           (
             <ScrollView contentContainerStyle={styles.scrollContainer}>
