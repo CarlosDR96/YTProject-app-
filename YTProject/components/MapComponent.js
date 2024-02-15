@@ -7,6 +7,7 @@ const { width, height } = Dimensions.get('window');
 
 const MapComponent = ({videosList}) => {
   const [locationsList, setLocationsList] = useState([]);
+  console.log("Title " + videosList[0].Title);
 
   useEffect(() => {
     const filteredLocations = videosList
@@ -31,7 +32,7 @@ const MapComponent = ({videosList}) => {
             <Marker
               key={index}
               coordinate={{ latitude: location.latitude, longitude: location.longitude }}
-              title={`Marker ${index + 1}`}
+              title={videosList[index].Title}
             />
           ))}
       </MapView>
