@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Audio } from 'expo-av';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
   const [randomText, setRandomText] = useState('');
-
+  const [sound, setSound] = useState();
+  
   // Array de textos
   const textArray = [
     'Nos vamos para dentro a ver qué se cuece',
@@ -20,15 +22,25 @@ const SplashScreen = () => {
     setRandomText(textArray[randomIndex]);
   };
 
+  async function playSound() {
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync(require('../assets/intro.mp3'))
+    setSound(sound);
+
+    console.log('Playing Sound');
+    await sound.playAsync();
+  }
+
   // Efecto secundario para cambiar a HomeScreen después de x segundos
   useEffect(() => {
+    playSound();
     chooseRandomText(); // Escoge un texto aleatorio al renderizar
 
     const timer = setTimeout(() => {
       // Navegar a la pantalla Home después de x segundos
       console.log('go to home')
       navigation.navigate('Home');
-    }, 1000); // segundos en milisegundos
+    }, 8000); // segundos en milisegundos
 
     return () => clearTimeout(timer);
   }, [navigation]);
