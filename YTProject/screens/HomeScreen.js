@@ -84,7 +84,7 @@ const HomeScreen = ({ navigation }) => {
               {videosList && tagsList.length > 0 ? (
                 videosList.map((item, index) => (
                       <TouchableCard  onPress={() => onPress({ navigation })} key={index} title={item.Title} tags={item.Tags} tagsList={tagsList}
-                      desc={item.Description} sourceImg="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"/>
+                      desc={item.Description} sourceImg={item.Youtube}/>
                 ))
               ) : (
                 // Mostrar un mensaje de carga o un indicador de vacío

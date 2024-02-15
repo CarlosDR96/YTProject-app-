@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginBottom: 5,
+    marginTop: 3,
   },
   tagContainer: {
     backgroundColor: 'orange',
