@@ -21,6 +21,7 @@ import TouchableCard from '../components/TouchableCard';
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
   const [videosList, setVideosList] = useState([]);
+  const [tagsList, setTagsList] = useState([]);
   const [refresh, setRefresh] = useState("");
 
 
@@ -43,8 +44,14 @@ const HomeScreen = ({ navigation }) => {
         const videoSnapshot = await getDocs(videosCol); // Obtiene todos los documentos
         const videosListData = videoSnapshot.docs.map(doc => doc.data()); // Mapea cada documento a su data
         setVideosList(videosListData);
-        console.log(videosList[1].Title)
+        //console.log(videosList[1].Title)
+
+        const tagsCol = collection(db, "Tags");
+        const tagsSnapshot = await getDocs(tagsCol);
+        const tagsListData = tagsSnapshot.docs.map(doc => doc.data());
+        setTagsList(tagsListData[0].Values);
         setRefresh(" ");
+        console.log(tagsList)
   
  // console.log(userList[0].Nom); // Imprime los datos obtenidos
   
@@ -74,26 +81,16 @@ const HomeScreen = ({ navigation }) => {
           ) : 
           (
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-              {videosList ? (
+              {videosList && tagsList.length > 0 ? (
                 videosList.map((item, index) => (
-                  <TouchableCard  onPress={() => onPress({ navigation })} key={index} title={item.Title} tags={item.Tags}
-                  desc={item.Address} sourceImg="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"/>
+                      <TouchableCard  onPress={() => onPress({ navigation })} key={index} title={item.Title} tags={item.Tags} tagsList={tagsList}
+                      desc={item.Description} sourceImg="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"/>
                 ))
               ) : (
                 // Mostrar un mensaje de carga o un indicador de vacío
                 <Text style={styles.titulo}>Cargando...</Text>
               )}
-            {/*  {videosList ? (
-                videosList.map((item, index) => (
-                  <TouchableOpacity onPress={() => onPress({navigation })}>
-                    <Card key={index} titulo={item.Title} tags={item.Tags}
-                    descripcion={item.Address} imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"/>
-                </TouchableOpacity>
-                ))
-              ) : (
-                // Mostrar un mensaje de carga o un indicador de vacío
-                <Text style={styles.titulo}>Cargando...</Text>
-              )}*/}
+          
             </ScrollView>
           )
         }

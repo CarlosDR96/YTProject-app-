@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center', // Centrar verticalmente las imágenes
-    backgroundColor: '#000000',
+    backgroundColor: '#1B1212',
     paddingHorizontal: 16,
     height: '100%',
   },

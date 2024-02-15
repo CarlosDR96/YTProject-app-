@@ -33,7 +33,7 @@ const cardWidth = width * 0.3; // Ajusta este valor según tus necesidades
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#262626',
+    backgroundColor: '#343434',
     borderRadius: 8,
     margin: 10,
     overflow: 'hidden',

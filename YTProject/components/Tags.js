@@ -2,12 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const Tags = ({ tags }) => {
-  // Asegurarse de que tags sea una cadena antes de dividirla
-  const tagArray = typeof tags === 'string' ? tags.split(' ') : [];
 
   return (
     <View style={styles.tagsContainer}>
-      {tagArray.map((tag, index) => (
+      {tags.map((tag, index) => (
         <View key={index} style={styles.tagContainer}>
           <Text style={styles.tagText}>{tag}</Text>
         </View>
