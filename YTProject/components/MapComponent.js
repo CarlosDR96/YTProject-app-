@@ -1,5 +1,5 @@
 import React, { useEffect, useState }from 'react';
-import { Dimensions, StyleSheet, View, Image } from 'react-native';
+import { Dimensions, StyleSheet, View, Image, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker} from 'react-native-maps';
 
@@ -40,8 +40,24 @@ const MapComponent = ({videosList, navigation}) => {
               coordinate={{ latitude: location.latitude, longitude: location.longitude }}
               title={videosList[index].Title}
               onPress={() => {
-                // Navegar a otra pantalla aquí
-                navigation.navigate('Details', { videoId: videosList[index].id });
+                // Mostrar una alerta antes de navegar a la pantalla de detalles
+                Alert.alert(
+                  'Confirmación',
+                  `¿Quieres ver los detalles del video "${videosList[index].Title}"?`,
+                  [
+                    {
+                      text: 'Cancelar',
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'Sí',
+                      onPress: () => {
+                        // Navegar a la pantalla de detalles aquí
+                        navigation.navigate('Details', { videoId: videosList[index].id });
+                      },
+                    },
+                  ],
+                );
               }}
               >
                 <Image
