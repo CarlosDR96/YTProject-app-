@@ -1,5 +1,5 @@
 import React, { useEffect, useState }from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker} from 'react-native-maps';
 
@@ -43,7 +43,12 @@ const MapComponent = ({videosList, navigation}) => {
                 // Navegar a otra pantalla aquí
                 navigation.navigate('Details', { videoId: videosList[index].id });
               }}
-            />
+              >
+                <Image
+                    source={require('../img/Pin.png')}
+                    style={{ width: 30, height: 38 }} // Ajusta los valores según tus necesidades
+                  />
+            </Marker>
           ))}
       </MapView>
       </View>
