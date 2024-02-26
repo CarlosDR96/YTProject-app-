@@ -24,8 +24,8 @@ const NavBar = ({ navigation }) => {
                 <MaterialIcons name="favorite" size={30} color={getIconColor('Profile')} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.navItem}>
-                <MaterialIcons name="addchart" size={30} color={getIconColor('Profile')} />
+            <TouchableOpacity onPress={() => navigation.navigate('Poll')} style={styles.navItem}>
+                <MaterialIcons name="addchart" size={30} color={getIconColor('Poll')} />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('About')} style={styles.navItem}>

@@ -1,21 +1,18 @@
-// Details Screen
-import { View, Image, Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { View, Text, StyleSheet  } from 'react-native';
+import NavBar from '../components/NavBar';
+import styles from '../styles/ProfileScreenStyles';
 
-const About = ({route, navigation}) => {
+const AboutScreen = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+        <Text style={[styles.text, { fontSize: 30 }]}>This is the About Screen</Text>
+        <NavBar NavBar navigation={navigation} />
+    </View>
+    
+  );
+};
 
-    return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={[styles.text, { fontSize: 30 }]}>This is the About Screen</Text>
-        </View>
-    );
-}
 
-const styles = StyleSheet.create({
-    text : {
-        fontSize: 22,
-        color: '#333',  // Dark text for contrast
-    }
-});
 
-export default About
+export default AboutScreen;
