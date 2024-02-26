@@ -41,7 +41,7 @@ const PollScreen = ({ navigation }) => {
             <View style={styles.body}>
                 {pollsList && pollsList.length > 0 ? (
                     pollsList.map((pollItem, index) => (
-                    <PollItem rows={pollItem.Options} title={pollItem.Title}/>
+                    <PollItem key={index} rows={pollItem.Options} title={pollItem.Title}/>
                     ))
                     ):(
                         <Text>Cargando</Text>

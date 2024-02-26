@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import TouchablePollRow from './TouchablePollRow';
 
 const PollItem = ({ rows, title }) => {
-    const [pressedIndex, setPressedIndex] = useState(null);
+   const [pressedIndex, setPressedIndex] = useState(null);
+   const [selectedOptionIndex, setSelectedOptionIndex] = useState(-1);
 
     return (
         <View style={styles.container}>
@@ -11,16 +13,14 @@ const PollItem = ({ rows, title }) => {
             </View>
             <View style={styles.rowsContainer}>
                 {rows.map((row, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={[
-                            styles.rowContainer,
-                            pressedIndex === index && { backgroundColor: '#orange' }, // Cambia el color al presionar
-                        ]}
-                        onPress={() => setPressedIndex(index)} // Actualiza el estado al presionar
-                    >
-                        <Text style={styles.rowText}>{row}</Text>
-                    </TouchableOpacity>
+                     <TouchablePollRow
+                     key={index}
+                     option={row}
+                     index={index}
+                     selectedOptionIndex={selectedOptionIndex} // Pasa el índice seleccionado
+                     setSelectedOptionIndex={setSelectedOptionIndex} // Pasa la función para actualizar el índice
+                   />
+                   
                 ))}
             </View>
         </View>
@@ -30,14 +30,10 @@ const PollItem = ({ rows, title }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        width: '70%',
+        width: '80%',
         overflow: 'hidden',
         borderRadius: 30,
         margin: 15,
-    },
-    rowText: {
-        color: 'black',
-        fontSize: 16,
     },
     titleContainer: {
         backgroundColor: '#4D4D4F',
@@ -51,14 +47,6 @@ const styles = StyleSheet.create({
     rowsContainer: {
         backgroundColor: 'white',
         margin: 5,
-    },
-    rowContainer: {
-        backgroundColor: '#DADBDD',
-        margin: 8,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderColor: 'black',
-        borderRadius: 15,
     },
 });
 
