@@ -17,17 +17,19 @@ const NavBar = ({ navigation }) => {
         <View style={styles.navBar}>
             <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.navItem}>
                 <MaterialIcons name="home" size={30} color={getIconColor('Home')} />
-                <Text style={styles.navText}>Home</Text>
+               
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.navItem}>
-                <MaterialIcons name="person" size={30} color={getIconColor('Profile')} />
-                <Text style={styles.navText}>Profile</Text>
+                <MaterialIcons name="favorite" size={30} color={getIconColor('Profile')} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate('Poll')} style={styles.navItem}>
+                <MaterialIcons name="addchart" size={30} color={getIconColor('Poll')} />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('About')} style={styles.navItem}>
                 <MaterialIcons name="info" size={30} color={getIconColor('About')} />
-                <Text style={styles.navText}>About</Text>
             </TouchableOpacity>
         </View>
     );

@@ -1,4 +1,3 @@
-// Details Screen
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import NavBar from '../components/NavBar';
@@ -78,3 +77,4 @@ const styles = StyleSheet.create({
 });
 
 export default About;
+

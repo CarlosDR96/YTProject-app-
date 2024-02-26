@@ -13,8 +13,9 @@ export const iconSizes = {
       height: screenHeight * 0.10, // 10% of the screen height
       flexDirection: 'row', // Align items in a row
       justifyContent: 'space-around', // Evenly space the items
+     // backgroundColor: 'red',
       alignItems: 'center', // Center items vertically
-      backgroundColor: '#1B1212', // Background color for the navBar
+     // backgroundColor: '#1B1212', // Background color for the navBar
       // Add any other styles like shadow, border, etc.
     },
     navItem: {
