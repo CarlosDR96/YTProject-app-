@@ -4,7 +4,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useRoute } from '@react-navigation/native';
 import styles from '../styles/NavBarStyles'; // Adjust the import path as necessary
 
-const NavBar = ({ navigation }) => {
+
+const NavBar = ({ navigation, videosList}) => {
     const route = useRoute();
     const currentRoute = route.name; // Retrieves the current route name
 
@@ -20,8 +21,15 @@ const NavBar = ({ navigation }) => {
                
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.navItem}>
+            <TouchableOpacity 
+                onPress={() => {
+                    console.log('VIDEOS LIST navbar: ', videosList);
+                    navigation.navigate('Profile', { restaurants: videosList });
+                }} 
+                style={styles.navItem}
+                >
                 <MaterialIcons name="favorite" size={30} color={getIconColor('Profile')} />
+                <Text style={styles.navText}>Favorites</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('Poll')} style={styles.navItem}>

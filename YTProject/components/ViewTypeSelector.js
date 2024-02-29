@@ -20,7 +20,7 @@ const ViewTypeSelector = ({ onToggle }) => {
         options={options}
         initial={0}
         onPress={onToggle}
-        buttonColor='lightgray' // Cambia el color del botón al mismo color que el fondo
+        buttonColor='orange' // Cambia el color del botón al mismo color que el fondo
         hasPadding // Añade un pequeño margen alrededor del botón
         textStyle={styles.switchText}
         style={styles.switchContainer}
