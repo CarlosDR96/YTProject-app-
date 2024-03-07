@@ -44,7 +44,7 @@ const PollScreen = ({ navigation }) => {
                     <PollItem key={index} rows={pollItem.Options} title={pollItem.Title}/>
                     ))
                     ):(
-                        <Text style={styles.cargtext}>Cargando...</Text>
+                        <Text ></Text>
                     )}
             </View>
         </ScrollView>
