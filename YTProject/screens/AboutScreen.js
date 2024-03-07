@@ -3,6 +3,9 @@ import { View, Text, StyleSheet  } from 'react-native';
 import NavBar from '../components/NavBar';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontistoIcons from 'react-native-vector-icons/Fontisto';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Header from '../components/Header';
 import logo from '../img/SezarBlueLogo.png';
@@ -41,18 +44,16 @@ const AboutScreen = ({ navigation }) => {
         <View style={styles.detailsContainer}>
         <Text style={styles.lbl}>Desarrolado por</Text>
         <View style={styles.line}/>
-        <View style={styles.iconContainer}>
-            <FontistoIcons padding={15} name="instagram" size={30} color={getIconColor('instagram')} />
-            <Text style={styles.text}>@SezarBlue</Text>
+        <View style={styles.devContainer}>
+            <FontAwesome5 padding={10} name="users" size={30} color={getIconColor('users')} />
+            <View style={styles.devNamesContainer}>
+              <Text style={styles.devName}>Biel Díaz Basullas</Text>
+              <Text style={styles.devName}>Carlos Domínguez Ramos</Text>
+              <Text style={styles.devName}>Joan López Salvans</Text>
+              <Text style={styles.devName}>Marc Márquez Soto</Text>
+            </View>
+            
           </View>
-          <View style={styles.iconContainer}>
-            <Ionicons padding={15} name="logo-youtube" size={30} color={getIconColor('logo-youtube')} />
-            <Text style={styles.text}>@SezarBlue</Text>
-          </View>     
-          <View style={styles.iconContainer}>
-            <Ionicons padding={15} name="logo-youtube" size={30} color={getIconColor('logo-youtube')} />
-            <Text style={styles.text}>@SezarBlue</Text>
-          </View> 
          
    
         </View>
@@ -96,10 +97,8 @@ const styles = StyleSheet.create({
   iconContainer: {
     flexDirection: 'row',
     width: '100%',
-   // backgroundColor: 'pink',
+  //  backgroundColor: 'pink',
     alignItems: 'center',
-    
-
   },
   text: {
     color: 'white',
@@ -117,6 +116,22 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'orange',
     borderRadius: 30,
+  },
+  devContainer: {
+    flexDirection: 'row',
+    width: '100%',
+   // backgroundColor: 'pink',
+    alignItems: 'center',
+  },
+  devNamesContainer: {
+    margin: 5,
+    //backgroundColor: 'blue',
+
+  },
+  devName: {
+    color: 'white',
+    fontSize: 16,
+    padding: 5,
   }
   
 });
