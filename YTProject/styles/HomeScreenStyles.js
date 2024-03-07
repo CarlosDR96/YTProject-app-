@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
   titulo:{
     color: 'white',
     fontSize: 16,
+    alignItems:'center',
   },
 });
 
