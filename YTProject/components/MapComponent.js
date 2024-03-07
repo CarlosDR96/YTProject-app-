@@ -80,8 +80,7 @@ const styles = StyleSheet.create({
     marginLeft: '2.5%',
     padding: 20,
     borderRadius: 15, // Ajusta este valor para cambiar la curvatura de las esquinas
-    borderWidth: 3,
-    borderColor: '#343434',
+    borderWidth: 0,
     overflow: 'hidden', // Importante para que las esquinas redondeadas se muestren correctamente
   },
   map: {

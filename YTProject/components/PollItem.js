@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 23,
         margin: 10,
+        fontWeight: 'bold',
     },
     rowsContainer: {
         backgroundColor: 'white',

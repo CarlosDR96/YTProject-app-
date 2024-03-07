@@ -16,6 +16,7 @@ import { useRoute } from '@react-navigation/native';
 import { db } from '../firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import TouchableCard from '../components/TouchableCard';
+import { loadFavorites, saveFavorites } from '../storage/AsyncStorageHelper';
 
 
 
@@ -30,6 +31,7 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('Details');
     console.log('card clicked');
   };
+
   const toggleViewType = (newType) => {
     if (newType !== viewType) {
       setViewType(newType);
@@ -48,11 +50,17 @@ const HomeScreen = ({ navigation }) => {
     
     const fetchVideos = async () => {
       try {
-       // console.log(db);
+        await saveFavorites(["2oAQI9dgFoopsQr0l6c4", "JCcOPruLIv7vbfriihLw"]);
+        let favorites = await loadFavorites();
+        //console.log("The favorites are: ", favorites);
+
+        console.log(db);
+
         const videosCol = collection(db, 'Videos'); // Accede a la colección 'Users'
         const videoSnapshot = await getDocs(videosCol); // Obtiene todos los documentos
-        const videosListData = videoSnapshot.docs.map(doc => doc.data()); // Mapea cada documento a su data
+        const videosListData = videoSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setVideosList(videosListData);
+        
   
 
         const tagsCol = collection(db, "Tags");
@@ -67,7 +75,9 @@ const HomeScreen = ({ navigation }) => {
     };
   
     fetchVideos(); // Llama a la función al inicio
-  }, []);
+    console.log('VIDEOS LIST home: ', videosList);
+    console.log('TAG LIST: ', tagsList)
+  }, [setVideosList]); // Ensure the effect is dependent on setVideosList to avoid unnecessary re-renders
 
 
   return  (
@@ -101,7 +111,7 @@ const HomeScreen = ({ navigation }) => {
         }
       </View>
       <View style={styles.footer}></View>
-      <NavBar NavBar navigation={navigation} />
+      <NavBar Navbar navigation={navigation} videosList={videosList} />
     </View>
   );  
 }
