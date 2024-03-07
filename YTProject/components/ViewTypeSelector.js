@@ -7,8 +7,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const ViewTypeSelector = ({ onToggle }) => {
   // Opciones para el interruptor (Mapa y Lista)
   const options = [
-    { label: 'Map', value: 'Map' },
-    { label: 'List', value: 'List' },
+    { label: 'Mapa', value: 'Map' },
+    { label: 'Lista', value: 'List' },
   ];
 
   return (
@@ -26,6 +26,7 @@ const ViewTypeSelector = ({ onToggle }) => {
         buttonColor='orange' // Cambia el color del botón al mismo color que el fondo
         hasPadding // Añade un pequeño margen alrededor del botón
         textStyle={styles.switchText}
+        selectedTextStyle={styles.selectedSwitchText}   
         style={styles.switchContainer}
       />
 
@@ -60,6 +61,10 @@ const styles = StyleSheet.create({
     color: 'black', // Cambia el color del texto a negro
     fontSize: 16, // Aumenta el tamaño del texto
   },
+  selectedSwitchText: {
+  color: 'black', // Change color of selected text to white
+  fontSize: 16, // Keep the same font size or adjust as needed
+},
 });
 
 export default ViewTypeSelector;

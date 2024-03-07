@@ -16,6 +16,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     height: '10%',
   },
+  titulo:{
+    color: 'white',
+    fontSize: 16,
+  },
 });
 
 export default styles;

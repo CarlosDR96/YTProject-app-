@@ -62,7 +62,7 @@ return (
         <View style={styles.header}>
             <Header imageSource={logo} />
         </View>
-        <Text style={styles.text1}>Favorites</Text>
+        <Text style={styles.text1}>Favoritos</Text>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             {favoriteVideos.length > 0 && tagsList? (
             favoriteVideos.map((video, index) => (
@@ -81,7 +81,7 @@ return (
         ) : (
         <View style={styles.iconContainer}>
             <MaterialIcons name="highlight-off" size={60} color='white' />
-            <Text style={styles.text2}>No favorite videos available</Text>
+            <Text style={styles.text2}>No hay vídeos favoritos disponibles</Text>
         </View>
         )}
         </ScrollView>

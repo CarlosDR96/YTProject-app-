@@ -44,7 +44,7 @@ const PollScreen = ({ navigation }) => {
                     <PollItem key={index} rows={pollItem.Options} title={pollItem.Title}/>
                     ))
                     ):(
-                        <Text>Cargando</Text>
+                        <Text style={styles.cargtext}>Cargando...</Text>
                     )}
             </View>
         </ScrollView>
@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#1B1212',
         justifyContent: 'space-between',
-      // justifyContent: 'center'
       },
       header: {
         height: '20%',
@@ -73,6 +72,13 @@ const styles = StyleSheet.create({
         height: '70%',
         alignItems: 'center',
 
+      },
+      cargtext:{
+        color: 'white',
+        fontSize: 26,
+        textAlign: 'center', // Center the text horizontally
+        marginTop: 'auto', // Push the text to the center vertically
+        marginBottom: 'auto', // Push the text to the center vertically
       },
 
 })
