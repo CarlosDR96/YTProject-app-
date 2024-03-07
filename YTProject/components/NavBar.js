@@ -24,12 +24,11 @@ const NavBar = ({ navigation, videosList}) => {
             <TouchableOpacity 
                 onPress={() => {
                     console.log('VIDEOS LIST navbar: ', videosList);
-                    navigation.navigate('Profile', { restaurants: videosList });
+                    navigation.navigate('Favorites', { restaurants: videosList });
                 }} 
                 style={styles.navItem}
                 >
-                <MaterialIcons name="favorite" size={30} color={getIconColor('Profile')} />
-                <Text style={styles.navText}>Favorites</Text>
+                <MaterialIcons name="favorite" size={30} color={getIconColor('Favorites')} />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('Poll')} style={styles.navItem}>

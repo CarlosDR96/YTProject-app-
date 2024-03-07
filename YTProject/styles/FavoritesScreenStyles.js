@@ -7,6 +7,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#1B1212',
     justifyContent: 'space-between',
   },
+  text1:{
+    color: 'white',
+    fontSize: 30,
+    marginLeft: 15,
+    fontWeight: 'bold',
+  },
   scrollContainer: {
     alignItems: 'center',
     paddingVertical: 20,
@@ -14,10 +20,6 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: 'red',
     height: '20%',
-  },
-  map: {
-    backgroundColor: 'blue',
-    height: '10%',
   },
   text: {
     fontSize: 18,

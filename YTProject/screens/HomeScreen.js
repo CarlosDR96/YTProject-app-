@@ -68,6 +68,7 @@ const HomeScreen = ({ navigation }) => {
   
     fetchVideos(); // Llama a la función al inicio
     console.log('VIDEOS LIST home: ', videosList);
+    console.log('TAG LIST: ', tagsList)
   }, [setVideosList]); // Ensure the effect is dependent on setVideosList to avoid unnecessary re-renders
 
 

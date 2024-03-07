@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet  } from 'react-native';
 import NavBar from '../components/NavBar';
-import styles from '../styles/ProfileScreenStyles';
+import styles from '../styles/FavoritesScreenStyles';
 
 const AboutScreen = ({ navigation }) => {
   return (
