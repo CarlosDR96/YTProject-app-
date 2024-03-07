@@ -8,6 +8,7 @@ import { db } from '../firebaseConfig';
 import styles from '../styles/FavoritesScreenStyles';
 import Header from '../components/Header';
 import logo from '../img/SezarBlueLogo.png';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const FavoritesScreen = ({ route, navigation }) => {
   const { restaurants } = route.params; // Obté restaurants de route.params
@@ -78,7 +79,10 @@ return (
             </View>
             ))
         ) : (
-        <Text>No favorite videos available</Text>
+        <View style={styles.iconContainer}>
+            <MaterialIcons name="highlight-off" size={60} color='white' />
+            <Text style={styles.text2}>No favorite videos available</Text>
+        </View>
         )}
         </ScrollView>
         <NavBar navigation={navigation} />
