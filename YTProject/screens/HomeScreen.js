@@ -18,6 +18,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import TouchableCard from '../components/TouchableCard';
 
 
+
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
   const [videosList, setVideosList] = useState([]);
@@ -35,9 +36,16 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+  const recieveData = (data) => {
+    //use states videoslist tagslist
+  }
   
   useEffect(() => { // Funció que es crida al començar. Ve a ser un OnCreate d'Android/start()
     // Función para obtener todos los usuarios
+    console.log("He entrat a home screen");
+   // videoManager.subscribe(recieveData);
+
+    
     const fetchVideos = async () => {
       try {
        // console.log(db);

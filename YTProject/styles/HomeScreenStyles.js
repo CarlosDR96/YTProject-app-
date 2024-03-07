@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     height: '20%',
   },
   map: {
-    backgroundColor: 'blue',
+    //backgroundColor: 'blue',
     height: '10%',
   },
 });

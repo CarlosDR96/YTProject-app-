@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     height: cardWidth*0.7, // La altura es igual al ancho
     justifyContent: 'center', // Centra verticalmente la imagen
     overflow: 'hidden', // Para asegurarse de que no sobresalga del contenedor
-    backgroundColor: 'green',
+  //  backgroundColor: 'green',
     marginTop: '30%',
     marginBottom: '1%',
     borderRadius: 8,
