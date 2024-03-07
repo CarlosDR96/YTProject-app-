@@ -122,10 +122,12 @@ const styles = StyleSheet.create({
     width: '100%',
    // backgroundColor: 'pink',
     alignItems: 'center',
+    paddingTop: 10,
   },
   devNamesContainer: {
     margin: 5,
-    //backgroundColor: 'blue',
+    //marginTop: 18,
+  //  backgroundColor: 'blue',
 
   },
   devName: {
