@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     image: {
         width: '60%',
         height: '50%',
+        marginTop: '5%',
     },
 });
 
