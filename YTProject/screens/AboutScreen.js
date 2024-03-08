@@ -42,7 +42,7 @@ const AboutScreen = ({ navigation }) => {
 
         </View>
         <View style={styles.detailsContainer}>
-        <Text style={styles.lbl}>Desarrolado por</Text>
+        <Text style={styles.lbl}>Desarrolladores</Text>
         <View style={styles.line}/>
         <View style={styles.devContainer}>
             <FontAwesome5 padding={10} name="users" size={30} color={getIconColor('users')} />
@@ -52,8 +52,15 @@ const AboutScreen = ({ navigation }) => {
               <Text style={styles.devName}>Joan López Salvans</Text>
               <Text style={styles.devName}>Marc Márquez Soto</Text>
             </View>
+          </View>
+          <View style={styles.devContainer}>
+            <FontAwesome5 padding={10} name="school" size={30} color={getIconColor('school')} />
+            <View style={styles.devNamesContainer}>
+              <Text style={styles.devName}>Joviat</Text>
+            </View>
             
           </View>
+         
          
    
         </View>
@@ -120,7 +127,7 @@ const styles = StyleSheet.create({
   devContainer: {
     flexDirection: 'row',
     width: '100%',
-   // backgroundColor: 'pink',
+    //backgroundColor: 'pink',
     alignItems: 'center',
     paddingTop: 10,
   },
