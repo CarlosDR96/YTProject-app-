@@ -10,6 +10,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 const MapComponent = ({videosList, navigation}) => {
   const [locationsList, setLocationsList] = useState([]);
   const [markerTitle, setMarkerTitle] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [title, setTitle] = useState("");
   console.log("Title " + videosList[0].Title);
 
@@ -32,7 +33,9 @@ const MapComponent = ({videosList, navigation}) => {
           text: 'Sí',
           onPress: () => {
             // Navegar a la pantalla de detalles aquí
-            navigation.navigate('Details', { videoId: videosList[index].id });
+            console.log(currentIndex);
+            navigation.navigate('Details', { currentIndex });
+    
           },
         },
       ],
@@ -73,6 +76,7 @@ const MapComponent = ({videosList, navigation}) => {
               onPress={() => {
                 console.log('pin clicked: ' + videosList[index].Title);
                 markerTitle ? setMarkerTitle(false) : setMarkerTitle(true);
+                setCurrentIndex(index);
                 setTitle(videosList[index].Title);
               
               }}
@@ -96,7 +100,7 @@ const MapComponent = ({videosList, navigation}) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.thumbsContainer}>
-                <TouchableOpacity style={styles.TouchableOpacity} onPress={() => onCheckPress(navigation)}>
+                <TouchableOpacity style={styles.TouchableOpacity}  onPress={() => onCheckPress({ navigation })}>
                   <FontAwesome padding={2} name="check" size={35} color='green' />
                 </TouchableOpacity>
               </View>
