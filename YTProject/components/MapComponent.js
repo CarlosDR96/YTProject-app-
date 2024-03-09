@@ -12,7 +12,10 @@ const MapComponent = ({videosList, navigation}) => {
   const [markerTitle, setMarkerTitle] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [title, setTitle] = useState("");
-  console.log("Title " + videosList[0].Title);
+    // Estado para almacenar la imagen de cada marcador
+  const [markerImages, setMarkerImages] = useState(
+      videosList.map(() => require('../img/Pin.png'))
+    );
 
   const route = useRoute();
   const currentRoute = route.name; 
@@ -46,6 +49,7 @@ const MapComponent = ({videosList, navigation}) => {
 
   const onClosePress = () => {
     setMarkerTitle(false);
+    setMarkerImages(videosList.map(() => require('../img/Pin.png')));
   };
 
   useEffect(() => {
@@ -75,14 +79,23 @@ const MapComponent = ({videosList, navigation}) => {
               coordinate={{ latitude: location.latitude, longitude: location.longitude }}
               onPress={() => {
                 console.log('pin clicked: ' + videosList[index].Title);
-                markerTitle ? setMarkerTitle(false) : setMarkerTitle(true);
+                setMarkerTitle(true);
                 setCurrentIndex(index);
+              
                 setTitle(videosList[index].Title);
+                // 1. Restaurar la imagen original para todos los marcadores
+                const originalImages = videosList.map(() => require('../img/Pin.png'));
+                setMarkerImages(originalImages);
+
+                // 2. Cambiar la imagen solo para el marcador seleccionado
+                const updatedImages = [...originalImages];
+                updatedImages[index] = require('../img/OrangePin.png');
+                setMarkerImages(updatedImages);
               
               }}
               >
                 <Image
-                    source={require('../img/Pin.png')}
+                    source={markerImages[index]}
                     style={{ width: 30, height: 38 }} // Ajusta los valores según tus necesidades
                   />
                         {/*  {videosList[index].Title} */}

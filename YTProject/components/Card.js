@@ -100,6 +100,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'white',
     marginTop: 3,
+    marginRight: 8,
+    textAlign: 'justify',
   },
   scroll: {
     marginTop: 10,
