@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     alignItems: 'center',
-    paddingVertical: 20,
+  //  paddingVertical: 20,
   },
   header: {
     height: '20%',

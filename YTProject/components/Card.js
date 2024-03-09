@@ -1,27 +1,34 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import Tags from './Tags';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Card = ({ titulo, tags, descripcion, imagenFuente }) => {
+const Card = ({ onPress, titulo, tags, descripcion, imagenFuente }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.contenidoContainer}>
+    <View style={styles.cardContainer}>
+      <View style={styles.container}>
         <View style={styles.titleContainer}>
-          <Text style={styles.titulo} numberOfLines={3} ellipsizeMode="tail">{titulo}</Text>
+          <TouchableOpacity styles={styles.touchable} onPress={onPress}>
+            <Text style={styles.titulo}   numberOfLines={3} ellipsizeMode="tail">{titulo}</Text>
+          </TouchableOpacity>
           </View>
-          {/* Envuelve Tags con ScrollView horizontal */}
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <Tags tags={tags} />
-          </ScrollView>
-          {/* Contenedor adicional para la descripción */}
-          <View style={styles.descripcionContainer}>
-            <Text style={styles.descripcion} numberOfLines={4} ellipsizeMode="tail">
-              {descripcion}
-            </Text>
-          </View>
-      </View>
-      <View style={styles.imagenContainer}>
-        <Image style={styles.imagen} source={{ uri: imagenFuente }} />
+                  {/* Envuelve Tags con ScrollView horizontal */}
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scroll}>
+                <Tags tags={tags} />
+              </ScrollView>
+          
+              {/* Contenedor adicional para la descripción */}
+           <View style={styles.contenidoContainer}>
+            <View style={styles.descripcionContainer}>
+                <Text style={styles.descripcion} numberOfLines={4} ellipsizeMode="tail">
+                {descripcion}
+                </Text>
+                         
+            </View>
+            <View style={styles.imagenContainer}>
+              <Image style={styles.imagen} source={{ uri: imagenFuente }} />
+            </View>
+           </View>          
       </View>
     </View>
   );
@@ -31,37 +38,51 @@ const { width } = Dimensions.get('window');
 const cardWidth = width * 0.3; // Ajusta este valor según tus necesidades
 
 const styles = StyleSheet.create({
+  cardContainer: {
+  //  backgroundColor: 'blue',
+    width: '100%',
+    alignItems: 'center',
+    padding: 10,
+   // margin: 10,
+ 
+
+  },
   container: {
-    flexDirection: 'row',
-    backgroundColor: '#262626',
-    borderRadius: 8,
-    margin: 8,
+    width: '100%',
+    backgroundColor: '#323232',
+  //  backgroundColor: 'yellow',
+    borderRadius: 15,
+    justifyContent: 'center',
     overflow: 'hidden',
+    padding: 20,
+  },
+  touchable: {
+  //  backgroundColor: 'green',
   },
   imagenContainer: {
-    width: '33%',
-    height: cardWidth*0.7, // La altura es igual al ancho
+    width: '30%',
+    height: cardWidth*0.6, // La altura es igual al ancho
     justifyContent: 'center', // Centra verticalmente la imagen
     overflow: 'hidden', // Para asegurarse de que no sobresalga del contenedor
-  //  backgroundColor: 'green',
-    marginTop: '30%',
-    marginBottom: '1%',
+    backgroundColor: 'green',
+    marginLeft: 10,
+    marginRight: 3,
     borderRadius: 8,
+    marginTop: 3,
   },
   imagen: {
     width: '100%',
     aspectRatio: 1, // Hace que la imagen sea cuadrada
     resizeMode: 'cover',
-    marginRight: 2, // Margen de 1 píxel a la derecha
-   // marginTop: 60,
   },
   contenidoContainer: {
-    width: '65%',
-    padding: 13,
-   // backgroundColor: 'red',
+    flexDirection: 'row',
+    width: '100%',
+   //  backgroundColor: 'red',
   },
   titleContainer: {
-    width: '150%',
+    width: '100%',
+  //  backgroundColor: 'blue',
 
   },
   titulo: {
@@ -71,11 +92,19 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   descripcionContainer: {
-    flex: 1, // Para que la descripción ocupe el espacio disponible
+    flex: 1,
+   // backgroundColor: 'green',
+    width: '60%',
   },
   descripcion: {
     fontSize: 14,
     color: 'white',
+    marginTop: 3,
+  },
+  scroll: {
+    marginTop: 10,
+    marginBottom: 5,
+
   },
 });
 
