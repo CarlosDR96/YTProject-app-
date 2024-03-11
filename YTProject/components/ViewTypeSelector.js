@@ -2,32 +2,38 @@ import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import SwitchSelector from 'react-native-switch-selector';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const ViewTypeSelector = ({ onToggle }) => {
   // Opciones para el interruptor (Mapa y Lista)
   const options = [
-    { label: 'Map', value: 'Map' },
-    { label: 'List', value: 'List' },
+    { label: 'Mapa', value: 'Map' },
+    { label: 'Lista', value: 'List' },
   ];
 
   return (
     <View style={styles.selector}>
       {/* Imagen de la lupa a la izquierda */}
-      <Image source={require('../img/SearchIcon.png')} style={styles.icon} />
+      <View style={styles.icon}>
+        <MaterialIcons name="search" size={43} color="white"/>
+      </View>
 
       {/* Interruptor central */}
       <SwitchSelector
         options={options}
         initial={0}
         onPress={onToggle}
-        buttonColor='lightgray' // Cambia el color del botón al mismo color que el fondo
+        buttonColor='orange' // Cambia el color del botón al mismo color que el fondo
         hasPadding // Añade un pequeño margen alrededor del botón
         textStyle={styles.switchText}
+        selectedTextStyle={styles.selectedSwitchText}   
         style={styles.switchContainer}
       />
 
       {/* Imagen de los filtros a la derecha */}
-      <Image source={require('../img/FilterIcon.png')} style={styles.icon} />
+      <View style={styles.icon}>
+        <MaterialIcons name="filter-alt" size={40} color="white"/>
+      </View>
     </View>
   );
 };
@@ -37,24 +43,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center', // Centrar verticalmente las imágenes
-    backgroundColor: '#000000',
+    backgroundColor: '#1B1212',
     paddingHorizontal: 16,
     height: '100%',
   },
   icon: {
-    width: 30,
-    height: 30,
-    resizeMode: 'contain',
-    flex: 0.2,
+    width: 60, // Adjust as needed
+    height: 60, // Adjust as needed
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   switchContainer: {
-    flex: 0.6,
-    width: 90,
+    flex: 1, // Take up remaining space
+    minWidth: 200, // Set minimum width as needed
   },
   switchText: {
     color: 'black', // Cambia el color del texto a negro
     fontSize: 16, // Aumenta el tamaño del texto
   },
+  selectedSwitchText: {
+  color: 'black', // Change color of selected text to white
+  fontSize: 16, // Keep the same font size or adjust as needed
+},
 });
 
 export default ViewTypeSelector;

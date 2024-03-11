@@ -18,11 +18,12 @@ const styles = StyleSheet.create({
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#000000',
+        backgroundColor: '#1B1212',
     },
     image: {
         width: '60%',
         height: '50%',
+        marginTop: '5%',
     },
 });
 

@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#1B1212',
   },
   scrollContainer: {
     alignItems: 'center',
@@ -13,8 +13,13 @@ const styles = StyleSheet.create({
     height: '20%',
   },
   map: {
-    backgroundColor: 'blue',
+    //backgroundColor: 'blue',
     height: '10%',
+  },
+  titulo:{
+    color: 'white',
+    fontSize: 16,
+    alignItems:'center',
   },
 });
 

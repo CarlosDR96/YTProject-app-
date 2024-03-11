@@ -1,51 +1,101 @@
-// SplashScreen.js
 import React, { useEffect, useState } from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet, Animated, Easing } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import * as Font from 'expo-font';
+import { Audio } from 'expo-av';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
   const [randomText, setRandomText] = useState('');
+  const heartBeatAnimation = new Animated.Value(1);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  // Array de textos
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        peanut: require('../assets/fonts/PeanutDonuts.ttf'),
+      });
+      setFontsLoaded(true);
+    };
+
+    loadFonts();
+  }, []);
+
   const textArray = [
     'Nos vamos para dentro a ver qué se cuece',
     'Tengo un hambre que da calambre, que empiece el papeo',
     'Fairy de pan', 'Me va a dar un Camilo Sesto', '¡Ahí va, qué rico!', 'Carta vista para sentencia',
   ];
 
-  // Función para escoger un texto aleatorio
   const chooseRandomText = () => {
     const randomIndex = Math.floor(Math.random() * textArray.length);
     setRandomText(textArray[randomIndex]);
   };
 
-  // Efecto secundario para cambiar a HomeScreen después de x segundos
   useEffect(() => {
-    chooseRandomText(); // Escoge un texto aleatorio al renderizar
+    if (fontsLoaded) {
+      chooseRandomText();
 
-    const timer = setTimeout(() => {
-      // Navegar a la pantalla Home después de x segundos
-      console.log('go to home')
-      navigation.navigate('Home');
-    }, 1000); // segundos en milisegundos
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(heartBeatAnimation, {
+            toValue: 1.2,
+            duration: 300,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }),
+          Animated.timing(heartBeatAnimation, {
+            toValue: 1,
+            duration: 300,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
 
-    return () => clearTimeout(timer);
-  }, [navigation]);
+      const playIntroAudio = async () => {
+        const { sound } = await Audio.Sound.createAsync(
+          require('../assets/intro.mp3')
+        );
+        await sound.playAsync(); // Reproduce el audio
+
+        // Detén la reproducción después de 8 segundos
+        setTimeout(async () => {
+          await sound.stopAsync();
+          navigation.navigate('Home');
+        }, 8000);
+      };
+
+      playIntroAudio();
+    }
+  }, [navigation, heartBeatAnimation, fontsLoaded]);
+
+  const randomRotation = Math.random() * 10 - 5;
+
+  const animatedStyle = {
+    transform: [
+      {
+        scale: heartBeatAnimation,
+      },
+      {
+        rotate: `${randomRotation}deg`,
+      },
+    ],
+  };
 
   return (
     <View style={styles.container}>
-      {/* Imagen que ocupa toda la pantalla */}
       <Image
         source={require('../img/SplashScreen.png')}
         style={styles.backgroundImage}
         resizeMode="cover"
       />
 
-      {/* Texto en el centro */}
-      <View style={styles.textContainer}>
-        <Text style={[styles.text, { fontWeight: 'bold' }]}>{randomText}</Text>
-      </View>
+      {fontsLoaded && (
+        <Animated.View style={[styles.textContainer, animatedStyle]}>
+          <Text style={styles.text}>{randomText}</Text>
+        </Animated.View>
+      )}
     </View>
   );
 };
@@ -63,13 +113,18 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     position: 'absolute',
-    bottom: 310,
-    justifyContent: 'center',
+    bottom: 190,
+    left: 0,
+    right: 0,
+    padding: 15,
     alignItems: 'center',
   },
   text: {
-    fontSize: 15,
-    color: '#F4F1BB',
+    fontSize: 30,
+    color: '#FFFFFF',
+    fontFamily: 'peanut',
+    marginBottom: 50,
+    paddingHorizontal: 20,
     textAlign: 'center',
   },
 });

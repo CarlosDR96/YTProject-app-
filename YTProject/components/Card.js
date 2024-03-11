@@ -35,30 +35,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#262626',
     borderRadius: 8,
-    margin: 10,
+    margin: 8,
     overflow: 'hidden',
   },
   imagenContainer: {
-    width: '30%',
-    height: cardWidth, // La altura es igual al ancho
+    width: '33%',
+    height: cardWidth*0.7, // La altura es igual al ancho
     justifyContent: 'center', // Centra verticalmente la imagen
     overflow: 'hidden', // Para asegurarse de que no sobresalga del contenedor
-   // backgroundColor: 'green',
-    marginTop: '20%',
+  //  backgroundColor: 'green',
+    marginTop: '30%',
     marginBottom: '1%',
+    borderRadius: 8,
   },
   imagen: {
-    width: '95%',
+    width: '100%',
     aspectRatio: 1, // Hace que la imagen sea cuadrada
     resizeMode: 'cover',
-    borderRadius: 8,
     marginRight: 2, // Margen de 1 píxel a la derecha
    // marginTop: 60,
   },
   contenidoContainer: {
-    width: '70%',
-    padding: 10,
- //   backgroundColor: 'red',
+    width: '65%',
+    padding: 13,
+   // backgroundColor: 'red',
   },
   titleContainer: {
     width: '150%',

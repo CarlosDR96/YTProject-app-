@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import ViewTypeSelector from '../components/ViewTypeSelector';
 import NavigationComponent from '../components/NavigationComponent';
 import NavBar from '../components/NavBar';
-import Card from '../components/Card'
+import Card from '../components/Card';
 import Tags from '../components/Tags';
 import MapView from 'react-native-maps';
 import Header from '../components/Header'; // Importa el componente Header
@@ -16,38 +16,59 @@ import { useRoute } from '@react-navigation/native';
 import { db } from '../firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import TouchableCard from '../components/TouchableCard';
+import { loadFavorites, saveFavorites } from '../storage/AsyncStorageHelper';
+
 
 
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
   const [videosList, setVideosList] = useState([]);
+  const [tagsList, setTagsList] = useState([]);
   const [refresh, setRefresh] = useState("");
 
 
-  const onPress = ({navigation }) => {
-    navigation.navigate('Details');
+  const onPress = (item, index) => {
+    navigation.navigate('Details', { videoData: item, tagsIndex: index, tagsList });
     console.log('card clicked');
-  };
+  };   
+ 
+
   const toggleViewType = (newType) => {
     if (newType !== viewType) {
       setViewType(newType);
     }
   };
 
+  const recieveData = (data) => {
+    //use states videoslist tagslist
+  }
+  
   useEffect(() => { // Funció que es crida al començar. Ve a ser un OnCreate d'Android/start()
     // Función para obtener todos los usuarios
+    console.log("He entrat a home screen");
+   // videoManager.subscribe(recieveData);
+
+    
     const fetchVideos = async () => {
       try {
+        await saveFavorites(["2oAQI9dgFoopsQr0l6c4", "JCcOPruLIv7vbfriihLw"]);
+        let favorites = await loadFavorites();
+        //console.log("The favorites are: ", favorites);
+
         console.log(db);
+
         const videosCol = collection(db, 'Videos'); // Accede a la colección 'Users'
         const videoSnapshot = await getDocs(videosCol); // Obtiene todos los documentos
-        const videosListData = videoSnapshot.docs.map(doc => doc.data()); // Mapea cada documento a su data
+        const videosListData = videoSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setVideosList(videosListData);
-        console.log(videosList[1].Title)
-        setRefresh(" ");
+        
   
- // console.log(userList[0].Nom); // Imprime los datos obtenidos
-  
+
+        const tagsCol = collection(db, "Tags");
+        const tagsSnapshot = await getDocs(tagsCol);
+        const tagsListData = tagsSnapshot.docs.map(doc => doc.data());
+        setTagsList(tagsListData[0].Values);
+        setRefresh(" ");  
     
       } catch (error) {
         console.log(error);
@@ -55,7 +76,9 @@ const HomeScreen = ({ navigation }) => {
     };
   
     fetchVideos(); // Llama a la función al inicio
-  }, []);
+    console.log('VIDEOS LIST home: ', videosList);
+    console.log('TAG LIST: ', tagsList)
+  }, [setVideosList]); // Ensure the effect is dependent on setVideosList to avoid unnecessary re-renders
 
 
   return  (
@@ -68,38 +91,34 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <View style={{flex: 1}}>
-        {viewType === 'Map' ?
+      {viewType === 'Map' && videosList && videosList.length > 0 ? 
           (
-            <MapComponent /> // Usa el componente MapComponent
+            <MapComponent videosList={videosList} navigation={navigation}/> // Usa el componente MapComponent
           ) : 
           (
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-              {videosList ? (
+              {videosList && tagsList.length > 0 ? (
                 videosList.map((item, index) => (
-                  <TouchableCard  onPress={() => onPress({ navigation })} key={index} title={item.Title} tags={item.Tags}
-                  desc={item.Address} sourceImg="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"/>
+                  <TouchableCard
+                    onPress={() => onPress(item, index)} // Pass the entire video data
+                    key={index}
+                    title={item.Title}
+                    tags={item.Tags}
+                    tagsList={tagsList}
+                    desc={item.Description}
+                    sourceImg={item.Youtube}
+                  />
                 ))
               ) : (
                 // Mostrar un mensaje de carga o un indicador de vacío
                 <Text style={styles.titulo}>Cargando...</Text>
               )}
-            {/*  {videosList ? (
-                videosList.map((item, index) => (
-                  <TouchableOpacity onPress={() => onPress({navigation })}>
-                    <Card key={index} titulo={item.Title} tags={item.Tags}
-                    descripcion={item.Address} imagenFuente="https://media-cdn.tripadvisor.com/media/photo-s/1b/90/21/e9/entrada-principal-del.jpg"/>
-                </TouchableOpacity>
-                ))
-              ) : (
-                // Mostrar un mensaje de carga o un indicador de vacío
-                <Text style={styles.titulo}>Cargando...</Text>
-              )}*/}
             </ScrollView>
           )
         }
       </View>
       <View style={styles.footer}></View>
-      <NavBar NavBar navigation={navigation} />
+      <NavBar Navbar navigation={navigation} videosList={videosList} />
     </View>
   );  
 }

@@ -1,41 +1,134 @@
-import React from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import MapView from 'react-native-maps';
+import React, { useEffect, useState }from 'react';
+import { Dimensions, StyleSheet, View, Image, TouchableOpacity, Alert, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import MapView, { Marker} from 'react-native-maps';
+import * as Location from 'expo-location';
+
 
 
 const { width, height } = Dimensions.get('window');
 
-const MapComponent = () => {
+const MapComponent = ({ videosList, navigation }) => {
+  const [locationsList, setLocationsList] = useState([]);
+  const [currentLocation, setCurrentLocation] = useState(null);
+
+  const onMarkerPress = (videoData) => {
+    navigation.navigate('Details', { videoData });
+  };
+
+  const getCurrentLocation = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      setCurrentLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+    } catch (error) {
+      console.error('Error getting current location:', error);
+    }
+  };
+
+  useEffect(() => {
+    const filteredLocations = videosList
+      .filter((video) => video.Geopoint !== null && video.Geopoint !== undefined)
+      .map((video) => video.Geopoint);
+
+    setLocationsList(filteredLocations);
+
+    // Obtener la ubicación actual al cargar el componente
+    getCurrentLocation();
+  }, [videosList]);
+
   return (
     <View style={styles.mapContainer}>
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
+            latitude: 40.4637,
+            longitude: -3.7492,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
-        />
-      </View>
+          >
+          {locationsList.map((location, index) => (
+            <Marker
+              key={index}
+              coordinate={{ latitude: location.latitude, longitude: location.longitude }}
+              title={videosList[index].Title}
+              onPress={() => {
+                // Mostrar una alerta antes de navegar a la pantalla de detalles
+                Alert.alert(
+                  'Confirmación',
+                  `¿Quieres ver los detalles del video "${videosList[index].Title}"?`,
+                  [
+                    {
+                      text: 'Cancelar',
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'Sí',
+                      onPress: () => {
+                        // Navegar a la pantalla de detalles aquí
+                        navigation.navigate('Details', { videoId: videosList[index].id });
+                      },
+                    },
+                  ],
+                );
+              }}
+              >
+                <Image
+                    source={require('../img/Pin.png')}
+                    style={{ width: 30, height: 38 }} // Ajusta los valores según tus necesidades
+                  />
+            </Marker>
+          ))}
+      </MapView>
+      {/* Botón para centrar el mapa en la ubicación actual */}
+      <TouchableOpacity style={styles.centerButton} onPress={getCurrentLocation}>
+        <Text style={styles.centerButtonText}>Centrar Mapa</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   mapContainer: {
-    align: 'center',
+    alignItems: 'center',  // En lugar de "align"
     flex: 1,
     width: '95%',
     height: '100%',
     marginLeft: '2.5%',
     padding: 20,
     borderRadius: 15, // Ajusta este valor para cambiar la curvatura de las esquinas
+    borderWidth: 0,
     overflow: 'hidden', // Importante para que las esquinas redondeadas se muestren correctamente
   },
+  
   map: {
     width: width,
     height: height,
     position: 'absolute',
   },
+  centerButton: {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+    backgroundColor: '#3498db',
+    padding: 10,
+    borderRadius: 5,
+  },
+  centerButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
 });
+
 export default MapComponent;
