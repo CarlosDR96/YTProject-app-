@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableWithoutFeedback, Modal, TouchableOpacity, } from 'react-native';
 import logo from '../img/SezarBlueLogo.png';
 import Header from '../components/Header';
 import NavBar from '../components/NavBar';
@@ -7,10 +7,12 @@ import Tags from '../components/Tags';
 import YoutubeVideo from '../components/YoutubeVideo';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+import CarouselDef from '../components/CarouselDef';
+
 
 
 const DetailsScreen = ({ route, navigation }) => {
+  const [modalVisible, setModalVisible] = useState(false);
   const { params } = route;
   const videoData = params ? params.videoData : null;
   const tagsIndex = params ? params.tagsIndex : null;
@@ -24,20 +26,34 @@ const DetailsScreen = ({ route, navigation }) => {
     tagsList && tagsList.length > tagIndex ? tagsList[tagIndex] : null
   );
 
-  const renderImageItem = ({ item }) => (
-    <Image
-      source={{ uri: item }}
-      style={styles.carouselImage}
-      resizeMode="cover"
-    />
-  );
-
   const handleFavPress = () => {
     setIsFavPressed(!isFavPressed);
   };
 
+  const handleImagePress = () => {
+    setModalVisible(!modalVisible);
+  };
+  
+
   return (
     <View style={styles.container}>
+      <Modal
+        transparent
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+            <View style={styles.modalContent}>
+              <Image
+                source={{ uri: videoData.Images[activeSlide].imageUrl }}
+                style={styles.modalImage}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </Modal>
         <View style={styles.header}>
           <Header imageSource={logo} />
         </View>
@@ -48,39 +64,26 @@ const DetailsScreen = ({ route, navigation }) => {
         <Text style={styles.detailText}>{videoData.Restaurant}</Text>
         <Text style={styles.detailText}>{videoData.Address}</Text>
         <Text style={styles.detailText}>{videoData.Youtube}</Text>
-          <View style={styles.favTag}>
+        <View style={styles.Tags}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <Tags tags={filteredTags} /> 
           </ScrollView>
-          <TouchableWithoutFeedback onPress={handleFavPress}>
-            <Image
-              source={isFavPressed ? require('../img/FavPressed.png') : require('../img/FavUnpressed.png')}
-              style={styles.heartIcon}
-            />
-          </TouchableWithoutFeedback>
-          </View>
+        </View>
         <YoutubeVideo videoUrl={`https://www.youtube.com/embed/${videoData.Youtube}`} />
         <View style={styles.descriptionContainer}>
           <Text style={styles.detailText}>{videoData.Description}</Text>
-          <Carousel
-            data={videoData.Images}
-            renderItem={renderImageItem}
-            sliderWidth={300}
-            itemWidth={300}
-            onSnapToItem={(index) => setActiveSlide(index)}
-          />
-          <Pagination
-            dotsLength={videoData.Images.length}
-            activeDotIndex={activeSlide}
-            containerStyle={styles.paginationContainer}
-            dotStyle={styles.paginationDot}
-            inactiveDotStyle={styles.paginationInactiveDot}
-            inactiveDotOpacity={0.6}
-            inactiveDotScale={0.8}
-          />
+          <CarouselDef fotos={videoData.Images} onPress={handleImagePress} />
         </View>
       </ScrollView>
-  
+      <View style={styles.favContainer}>
+        <View style={styles.favBackground} />
+        <TouchableWithoutFeedback onPress={handleFavPress}>
+          <Image
+            source={isFavPressed ? require('../img/FavPressed.png') : require('../img/FavUnpressed.png')}
+            style={styles.heartIcon}
+          />
+        </TouchableWithoutFeedback>
+      </View>
         <View style={styles.navigation}>
           <NavBar navigation={navigation} />
         </View>
@@ -120,7 +123,31 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     color: '#FFFFFF',
   },
-  favTag: {
+  favContainer: {
+    position: 'absolute',
+    bottom: 100,
+    right: 20,
+    alignItems: 'center',
+  },
+
+  favBackground: {
+    width: 60, // Ajusta el ancho del círculo según sea necesario
+    height: 60, // Ajusta la altura del círculo según sea necesario
+    backgroundColor: '#413F3F', // Gris transparente
+    borderRadius: 30, // Ajusta el radio según sea necesario para hacer un círculo
+    position: 'absolute',
+    bottom: 0,
+    opacity: 0.7
+  },
+  heartIcon: {
+    width: 50, // Ajusta el ancho del ícono según sea necesario
+    height: 50, // Ajusta la altura del ícono según sea necesario
+    resizeMode: 'contain',
+    zIndex: 1, // Asegura que el ícono esté por encima del círculo
+    opacity: 0.7,
+    margin: 2,
+  },
+  Tags: {
     marginTop: 20,
     alignItems: 'center',
     flexDirection: 'row', // Add this line
@@ -166,6 +193,25 @@ const styles = StyleSheet.create({
   paginationInactiveDot: {
     backgroundColor: '#888',
   },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // fondo oscuro
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white', // color de fondo del contenido del modal
+    width: '80%', // ajusta el ancho del modal según sea necesario
+    height: '80%', // ajusta la altura del modal según sea necesario
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  modalImage: {
+    flex: 1,
+    resizeMode: 'contain',
+    width: '100%',
+    height: '100%',
+  }
 });
 
 export default DetailsScreen;
