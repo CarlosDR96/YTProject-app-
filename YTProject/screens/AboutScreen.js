@@ -8,6 +8,9 @@ import Header from '../components/Header';
 import logo from '../img/SezarBlueLogo.png';
 import homeStyles from '../styles/HomeScreenStyles'; // Adjust the import path as necessary
 import { useRoute } from '@react-navigation/native';
+import { Linking } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+
 
 
 const AboutScreen = ({ navigation }) => {
@@ -18,9 +21,17 @@ const AboutScreen = ({ navigation }) => {
     return currentRoute === pageName ? 'orange' : '#fff';
   };
 
+  const handleInstagramClick = () => {
+    Linking.openURL('https://www.instagram.com/sezarblue/');
+  };
+  
+  const handleYouTubeClick = () => {
+    Linking.openURL('https://www.youtube.com/@SezarBlue');
+  };
+
   return (
     <View style={styles.aboutContainer}>
-       <View style={homeStyles.header}>
+      <View style={homeStyles.header}>
         <Header imageSource={logo} />
       </View>
       <View style={styles.body}>
@@ -28,15 +39,17 @@ const AboutScreen = ({ navigation }) => {
           <Text style={styles.lbl}>Redes</Text>
           <View style={styles.line}/>
           <View style={styles.iconContainer}>
+          <TouchableOpacity onPress={() => handleInstagramClick()} style={styles.touchableContainer}>
             <FontistoIcons padding={15} name="instagram" size={30} color={getIconColor('instagram')} />
             <Text style={styles.text}>@SezarBlue</Text>
-          </View>
-          <View style={styles.iconContainer}>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.iconContainer}>
+          <TouchableOpacity onPress={() => handleYouTubeClick()} style={styles.touchableContainer}>
             <Ionicons padding={15} name="logo-youtube" size={30} color={getIconColor('logo-youtube')} />
             <Text style={styles.text}>@SezarBlue</Text>
-          </View>     
-
-
+          </TouchableOpacity>
+        </View>
         </View>
         <View style={styles.detailsContainer}>
         <Text style={styles.lbl}>Desarrolado por</Text>
@@ -98,8 +111,10 @@ const styles = StyleSheet.create({
     width: '100%',
    // backgroundColor: 'pink',
     alignItems: 'center',
-    
-
+  },
+  touchableContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   text: {
     color: 'white',
