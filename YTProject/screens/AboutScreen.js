@@ -98,8 +98,6 @@ const styles = StyleSheet.create({
     width: '100%',
    // backgroundColor: 'pink',
     alignItems: 'center',
-    
-
   },
   text: {
     color: 'white',
