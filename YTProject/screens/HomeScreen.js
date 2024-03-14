@@ -19,13 +19,10 @@ import TouchableCard from '../components/TouchableCard';
 import { loadFavorites, saveFavorites } from '../storage/AsyncStorageHelper';
 import VideoManager from '../utils/VideoManager';
 
-
-
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
   const [videosList, setVideosList] = useState([]);
   const [tagsList, setTagsList] = useState([]);
-  const [refresh, setRefresh] = useState("");
 
 
   const onPress = ({navigation }) => {
@@ -40,32 +37,18 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const recieveVideoData = (data) => {
-    //console.log("Video data received: "+data)
     setVideosList(data)
-    console.log("RECEIVED VIDEOS " + videosList)
-    //use states videoslist tagslist
   }
   const recieveTagsData = (data) => {
-    //console.log("Tags received 0: "+ data[0].value)
     setTagsList(data)
-    console.log("TAGS LIST " + tagsList)
-    //use states videoslist tagslist
   }
 
-  const recieveData = (data) => {
-    console.log("Data recieved " + data)
-  }
   
   useEffect(() => { 
-    //VideoManager.subscribe(recieveData);
     VideoManager.subscribe(recieveVideoData, 1); 
     VideoManager.subscribe(recieveTagsData, 2);
-    
-    // Funció que es crida al començar. Ve a ser un OnCreate d'Android/start()
-    // Función para obtener todos los usuarios
-    console.log("He entrat a home screen");
-   // videoManager.subscribe(recieveData);
 
+    console.log("He entrat a home screen");
     
    /* const fetchVideos = async () => {
       try {
@@ -96,6 +79,7 @@ const HomeScreen = ({ navigation }) => {
     //console.log('VIDEOS LIST home: ', videosList);
    // console.log('TAG LIST: ', tagsList[0])
   }, [setTagsList]); // Ensure the effect is dependent on setVideosList to avoid unnecessary re-renders*/
+  
 }, []);
 
 

@@ -37,6 +37,7 @@ const SplashScreen = () => {
     //VideoManager.loadData();
     VideoManager.loadVideosData();
     VideoManager.loadTagsData();
+    VideoManager.loadPollsData();
 
     playSound();
     chooseRandomText(); // Escoge un texto aleatorio al renderizar
