@@ -17,6 +17,7 @@ import { db } from '../firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import TouchableCard from '../components/TouchableCard';
 import { loadFavorites, saveFavorites } from '../storage/AsyncStorageHelper';
+import VideoManager from '../utils/VideoManager';
 
 
 
@@ -38,17 +39,35 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  const recieveData = (data) => {
+  const recieveVideoData = (data) => {
+    //console.log("Video data received: "+data)
+    setVideosList(data)
+    console.log("RECEIVED VIDEOS " + videosList)
     //use states videoslist tagslist
   }
+  const recieveTagsData = (data) => {
+    //console.log("Tags received 0: "+ data[0].value)
+    setTagsList(data)
+    console.log("TAGS LIST " + tagsList)
+    //use states videoslist tagslist
+  }
+
+  const recieveData = (data) => {
+    console.log("Data recieved " + data)
+  }
   
-  useEffect(() => { // Funció que es crida al començar. Ve a ser un OnCreate d'Android/start()
+  useEffect(() => { 
+    //VideoManager.subscribe(recieveData);
+    VideoManager.subscribe(recieveVideoData, 1); 
+    VideoManager.subscribe(recieveTagsData, 2);
+    
+    // Funció que es crida al començar. Ve a ser un OnCreate d'Android/start()
     // Función para obtener todos los usuarios
     console.log("He entrat a home screen");
    // videoManager.subscribe(recieveData);
 
     
-    const fetchVideos = async () => {
+   /* const fetchVideos = async () => {
       try {
         await saveFavorites(["2oAQI9dgFoopsQr0l6c4", "JCcOPruLIv7vbfriihLw"]);
         let favorites = await loadFavorites();
@@ -60,7 +79,6 @@ const HomeScreen = ({ navigation }) => {
         const videoSnapshot = await getDocs(videosCol); // Obtiene todos los documentos
         const videosListData = videoSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setVideosList(videosListData);
-        
   
 
         const tagsCol = collection(db, "Tags");
@@ -75,9 +93,10 @@ const HomeScreen = ({ navigation }) => {
     };
   
     fetchVideos(); // Llama a la función al inicio
-    console.log('VIDEOS LIST home: ', videosList);
-    console.log('TAG LIST: ', tagsList)
-  }, [setVideosList]); // Ensure the effect is dependent on setVideosList to avoid unnecessary re-renders
+    //console.log('VIDEOS LIST home: ', videosList);
+   // console.log('TAG LIST: ', tagsList[0])
+  }, [setTagsList]); // Ensure the effect is dependent on setVideosList to avoid unnecessary re-renders*/
+}, []);
 
 
   return  (

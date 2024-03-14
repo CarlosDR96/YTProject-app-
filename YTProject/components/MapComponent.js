@@ -24,7 +24,13 @@ const MapComponent = ({videosList, navigation}) => {
   };
 
   const onCheckPress = ({navigation}) => {
-    Alert.alert(
+
+      // Navegar a la pantalla de detalles aquí
+      console.log(currentIndex);
+      navigation.navigate('Details', { currentIndex });
+
+    };
+    /*Alert.alert(
       'Confirmación',
       `¿Quieres ver los detalles del video?`,
       [
@@ -46,7 +52,7 @@ const MapComponent = ({videosList, navigation}) => {
     //navigation.navigate('Details');
     console.log('check clicked');
   };
-
+*/
   const onClosePress = () => {
     setMarkerTitle(false);
     setMarkerImages(videosList.map(() => require('../img/Pin.png')));
@@ -77,9 +83,29 @@ const MapComponent = ({videosList, navigation}) => {
             <Marker
               key={index}
               coordinate={{ latitude: location.latitude, longitude: location.longitude }}
+              title={videosList[index].Title}
               onPress={() => {
                 console.log('pin clicked: ' + videosList[index].Title);
-                setMarkerTitle(true);
+                Alert.alert(
+                  'Confirmación',
+                  `¿Quieres ver los detalles del video?`,
+                  [
+                    {
+                      text: 'Cancelar',
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'Sí',
+                      onPress: () => {
+                        // Navegar a la pantalla de detalles aquí
+                        console.log(currentIndex);
+                        navigation.navigate('Details', { currentIndex });
+                
+                      },
+                    },
+                  ],
+                );
+               /* setMarkerTitle(true);
                 setCurrentIndex(index);
               
                 setTitle(videosList[index].Title);
@@ -90,7 +116,7 @@ const MapComponent = ({videosList, navigation}) => {
                 // 2. Cambiar la imagen solo para el marcador seleccionado
                 const updatedImages = [...originalImages];
                 updatedImages[index] = require('../img/OrangePin.png');
-                setMarkerImages(updatedImages);
+                setMarkerImages(updatedImages);*/
               
               }}
               >
@@ -103,7 +129,7 @@ const MapComponent = ({videosList, navigation}) => {
             </Marker>                   
           ))}        
       </MapView>
-      {markerTitle && (
+      {/*markerTitle && (
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{title}</Text>
             <View style={styles.btnContainer}>
@@ -119,7 +145,7 @@ const MapComponent = ({videosList, navigation}) => {
               </View>
             </View>
           </View>
-        )}
+      )*/}
     </View>
   );
 };

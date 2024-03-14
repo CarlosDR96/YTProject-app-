@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Audio } from 'expo-av';
+import VideoManager from '../utils/VideoManager'
 
 const SplashScreen = () => {
   const navigation = useNavigation();
@@ -33,6 +34,10 @@ const SplashScreen = () => {
 
   // Efecto secundario para cambiar a HomeScreen después de x segundos
   useEffect(() => {
+    //VideoManager.loadData();
+    VideoManager.loadVideosData();
+    VideoManager.loadTagsData();
+
     playSound();
     chooseRandomText(); // Escoge un texto aleatorio al renderizar
 
@@ -40,7 +45,7 @@ const SplashScreen = () => {
       // Navegar a la pantalla Home después de x segundos
       console.log('go to home')
       navigation.navigate('Home');
-    }, 800); // segundos en milisegundos
+    }, 8000); // segundos en milisegundos
 
     return () => clearTimeout(timer);
   }, [navigation]);

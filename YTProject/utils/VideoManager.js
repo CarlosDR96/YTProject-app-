@@ -19,23 +19,57 @@ class VideoManager {
      
     }
 
-    async loadData() {
+    async loadTagsData() {
         //await asyn funct firebase...
-         if (this.observer != null){
-            this.observer(this.data)
-            
+         try {
+          const tagsCol = collection(db, "Tags");
+          const tagsSnapshot = await getDocs(tagsCol);
+          const tagsListData = tagsSnapshot.docs.map(doc => doc.data());
+          this.tagsData = tagsListData[0].Values;
+          console.log("Video manager TAGS " + this.tagsData[0])
+
+          if (this.observer != null){
+             this.observer(this.tagsData)
+          }
+
          }
+         catch (error){
+          console.log(error)
+         }
+    }
+
+    async loadVideosData(){
+    
+        //this.observer(this.data)
+        try {
+          const videosCol = collection(db, 'Videos');
+          const videoSnapshot = await getDocs(videosCol);
+          const videosListData = videoSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          this.videosData = videosListData;
+
+          if (this.observer != null){
+           this.observer(this.videosData)
+          }
+
+         }
+         catch (error){
+          console.log(error)
+         }
+     
     }
   
   
     // Métodos adicionales de la clase Singleton
-    subscribe(observer) {
+    subscribe(observer, dataType) {
         this.observer = observer;
-        if (this.data != null){
-            this.observer(this.data);
+        if (dataType === 1 && this.videosData != null){
+            this.observer(this.videosData);
         }
-      console.log(this.someData);
+        if (dataType === 2 && this.tagsData != null){
+          this.observer(this.tagsData)
+        }
     }
+
   }
 
   const videoManager = new VideoManager();

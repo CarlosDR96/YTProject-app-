@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     height: cardWidth*0.6, // La altura es igual al ancho
     justifyContent: 'center', // Centra verticalmente la imagen
     overflow: 'hidden', // Para asegurarse de que no sobresalga del contenedor
-    backgroundColor: 'green',
+   // backgroundColor: 'green',
     marginLeft: 10,
     marginRight: 3,
     borderRadius: 8,
