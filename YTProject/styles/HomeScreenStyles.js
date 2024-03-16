@@ -21,6 +21,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     alignItems:'center',
   },
+  icon: {
+    //width: 60, // Adjust as needed
+    //height: 60, // Adjust as needed
+    justifyContent: 'center',
+    alignItems: 'center',
+    //position: 'absolute',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    marginTop: '7%',
+   // backgroundColor: 'red',
+    justifyContent: 'center',
+    padding: 5,
+  },
 });
 
 export default styles;

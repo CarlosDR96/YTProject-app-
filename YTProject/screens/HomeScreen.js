@@ -18,11 +18,19 @@ import { collection, getDocs } from 'firebase/firestore';
 import TouchableCard from '../components/TouchableCard';
 import { loadFavorites, saveFavorites } from '../storage/AsyncStorageHelper';
 import VideoManager from '../utils/VideoManager';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
   const [videosList, setVideosList] = useState([]);
   const [tagsList, setTagsList] = useState([]);
+  
+  const [isPressed, setIsPressed] = useState(false);
+
+  const handlePress = () => {
+    setIsPressed(!isPressed); // Cambia el estado al presionar
+  };
 
 
   const onPress = ({navigation }) => {
@@ -49,36 +57,6 @@ const HomeScreen = ({ navigation }) => {
     VideoManager.subscribe(recieveTagsData, 2);
 
     console.log("He entrat a home screen");
-    
-   /* const fetchVideos = async () => {
-      try {
-        await saveFavorites(["2oAQI9dgFoopsQr0l6c4", "JCcOPruLIv7vbfriihLw"]);
-        let favorites = await loadFavorites();
-        //console.log("The favorites are: ", favorites);
-
-        console.log(db);
-
-        const videosCol = collection(db, 'Videos'); // Accede a la colección 'Users'
-        const videoSnapshot = await getDocs(videosCol); // Obtiene todos los documentos
-        const videosListData = videoSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setVideosList(videosListData);
-  
-
-        const tagsCol = collection(db, "Tags");
-        const tagsSnapshot = await getDocs(tagsCol);
-        const tagsListData = tagsSnapshot.docs.map(doc => doc.data());
-        setTagsList(tagsListData[0].Values);
-        setRefresh(" ");  
-    
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  
-    fetchVideos(); // Llama a la función al inicio
-    //console.log('VIDEOS LIST home: ', videosList);
-   // console.log('TAG LIST: ', tagsList[0])
-  }, [setTagsList]); // Ensure the effect is dependent on setVideosList to avoid unnecessary re-renders*/
   
 }, []);
 
@@ -88,14 +66,40 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.header}>
         <Header imageSource={logo} />
       </View>
-      <View style={styles.map}>
-        <ViewTypeSelector onToggle={toggleViewType} selected={viewType}/>
+      <View style={styles.rowContainer}>
+          <TouchableOpacity onPress={handlePress}>
+              <View style={styles.icon}>
+                <MaterialIcons name="search" size={43} style={{ color: isPressed ? 'orange' : 'white' }} />
+              </View>
+          </TouchableOpacity>
+          <View>
+              <ViewTypeSelector onToggle={toggleViewType} selected={viewType}/>
+          </View>
+      {/* Imagen de los filtros a la derecha */}
+          <MaterialIcons name="filter-alt" size={40} color="white"/>
       </View>
+
+
+      {/* </View>
+       <View style={styles.map}>
+         {/* Imagen de la lupa a la izquierda 
+        <TouchableOpacity onPress={handlePress}>
+          <View style={styles.icon}>
+            <MaterialIcons name="search" size={43} style={{ color: isPressed ? 'orange' : 'white' }} />
+          </View>
+        </TouchableOpacity>
+        {isPressed && (
+          <View>
+            <Text>search</Text>
+          </View>
+        )}
+          <ViewTypeSelector onToggle={toggleViewType} selected={viewType}/>
+      </View>*/}
 
       <View style={{flex: 1}}>
       {viewType === 'Map' && videosList && videosList.length > 0 ? 
           (
-            <MapComponent videosList={videosList} navigation={navigation}/> // Usa el componente MapComponent
+            <MapComponent videosList={videosList} navigation={navigation}/> 
           ) : 
           (
             <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -105,7 +109,6 @@ const HomeScreen = ({ navigation }) => {
                       desc={item.Description} sourceImg={item.Youtube}/>
                 ))
               ) : (
-                // Mostrar un mensaje de carga o un indicador de vacío
                 <Text style={styles.titulo}>Cargando...</Text>
               )}
           
@@ -113,8 +116,7 @@ const HomeScreen = ({ navigation }) => {
           )
         }
       </View>
-      <View style={styles.footer}></View>
-      <NavBar Navbar navigation={navigation} videosList={videosList} />
+          <NavBar Navbar navigation={navigation} videosList={videosList} />
     </View>
   );  
 }

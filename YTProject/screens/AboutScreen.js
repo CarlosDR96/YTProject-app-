@@ -58,17 +58,10 @@ const AboutScreen = ({ navigation }) => {
             <View style={styles.devNamesContainer}>
               <Text style={styles.devName}>Joviat</Text>
             </View>
-            
           </View>
-         
-         
-   
         </View>
-
       </View>
-      
         <NavBar NavBar navigation={navigation} />
-        
     </View>
     
   );
@@ -77,16 +70,16 @@ const AboutScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   aboutContainer: {
     flex: 1,
-    height: '100%',
-    width: '100%',
+   
     backgroundColor: '#1B1212',
-    //backgroundColor: 'blue',
+   justifyContent: 'space-between',
+   
  
   },
   body: {
     height: '70%',
     width: '100%',
-   // backgroundColor: 'green',
+    //backgroundColor: 'green',
     backgroundColor: '#1B1212',
     //padding: 30,
    // justifyContent: 'space-evenly',

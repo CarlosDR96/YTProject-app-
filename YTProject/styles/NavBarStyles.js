@@ -10,7 +10,7 @@ export const iconSizes = {
 
   const styles = StyleSheet.create({
     navBar: {
-      height: screenHeight * 0.10, // 10% of the screen height
+      height: screenHeight * 0.09, // 10% of the screen height
       flexDirection: 'row', // Align items in a row
       justifyContent: 'space-around', // Evenly space the items
       alignItems: 'center', // Center items vertically

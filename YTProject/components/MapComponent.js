@@ -98,6 +98,7 @@ const MapComponent = ({videosList, navigation}) => {
             <Marker
               key={index}
               coordinate={{ latitude: location.latitude, longitude: location.longitude }}
+              //title={videosList[index].Title}
               onPress={() => {
                 console.log('pin clicked: ' + videosList[index].Title);
                 setCurrentIndex(index);
@@ -176,8 +177,9 @@ const styles = StyleSheet.create({
     align: 'center',
    // flex: 1,
     width: '95%',
-    height: '100%',
+    height: '97%',
     marginLeft: '2.5%',
+    marginTop: '3%',
     padding: 20,
     borderRadius: 15, // Ajusta este valor para cambiar la curvatura de las esquinas
     borderWidth: 0,

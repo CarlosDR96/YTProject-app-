@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
+import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import SwitchSelector from 'react-native-switch-selector';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const ViewTypeSelector = ({ onToggle }) => {
+
   // Opciones para el interruptor (Mapa y Lista)
   const options = [
     { label: 'Mapa', value: 'Map' },
@@ -13,11 +14,7 @@ const ViewTypeSelector = ({ onToggle }) => {
 
   return (
     <View style={styles.selector}>
-      {/* Imagen de la lupa a la izquierda */}
-      <View style={styles.icon}>
-        <MaterialIcons name="search" size={43} color="white"/>
-      </View>
-
+     
       {/* Interruptor central */}
       <SwitchSelector
         options={options}
@@ -30,10 +27,7 @@ const ViewTypeSelector = ({ onToggle }) => {
         style={styles.switchContainer}
       />
 
-      {/* Imagen de los filtros a la derecha */}
-      <View style={styles.icon}>
-        <MaterialIcons name="filter-alt" size={40} color="white"/>
-      </View>
+     
     </View>
   );
 };
@@ -41,21 +35,16 @@ const ViewTypeSelector = ({ onToggle }) => {
 const styles = StyleSheet.create({
   selector: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    //justifyContent: 'space-between',
     alignItems: 'center', // Centrar verticalmente las imágenes
     backgroundColor: '#1B1212',
     paddingHorizontal: 16,
-    height: '100%',
+    //height: '100%',
   },
-  icon: {
-    width: 60, // Adjust as needed
-    height: 60, // Adjust as needed
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+ 
   switchContainer: {
-    flex: 1, // Take up remaining space
-    minWidth: 200, // Set minimum width as needed
+  //  flex: 1, // Take up remaining space
+    minWidth: 250, // Set minimum width as needed
   },
   switchText: {
     color: 'black', // Cambia el color del texto a negro
