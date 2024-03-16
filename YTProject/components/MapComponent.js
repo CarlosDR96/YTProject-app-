@@ -1,7 +1,7 @@
 import React, { useEffect, useState }from 'react';
 import { Dimensions, StyleSheet, View, Image, Alert, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import MapView, { Marker} from 'react-native-maps';
+import MapView, { Callout, Marker} from 'react-native-maps';
 import { useRoute } from '@react-navigation/native';
 const { width, height } = Dimensions.get('window');
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -19,16 +19,30 @@ const MapComponent = ({videosList, navigation}) => {
 
   const route = useRoute();
   const currentRoute = route.name; 
-  
   const getIconColor = (pageName) => {
     return currentRoute === pageName ? 'orange' : '#fff';
   };
 
-  const onCheckPress = ({navigation}) => {
-
-      // Navegar a la pantalla de detalles aquí
-      console.log(currentIndex);
-      navigation.navigate('Details', { currentIndex });
+  const onTitlePress = ({navigation}) => {
+    Alert.alert(
+      'Confirmación',
+      `¿Quieres ver los detalles del video?`,
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Sí',
+          onPress: () => {
+            // Navegar a la pantalla de detalles aquí
+            console.log(currentIndex);
+            navigation.navigate('Details', { currentIndex });
+    
+          },
+        },
+      ],
+    );
 
     };
     /*Alert.alert(
@@ -84,10 +98,10 @@ const MapComponent = ({videosList, navigation}) => {
             <Marker
               key={index}
               coordinate={{ latitude: location.latitude, longitude: location.longitude }}
-              title={videosList[index].Title}
               onPress={() => {
                 console.log('pin clicked: ' + videosList[index].Title);
-                Alert.alert(
+                setCurrentIndex(index);
+             /*   Alert.alert(
                   'Confirmación',
                   `¿Quieres ver los detalles del video?`,
                   [
@@ -121,11 +135,17 @@ const MapComponent = ({videosList, navigation}) => {
               
               }}
               >
+               
                 <Image
                     source={markerImages[index]}
                     style={{ width: 30, height: 38 }} // Ajusta los valores según tus necesidades
                   />
                         {/*  {videosList[index].Title} */}
+                <Callout  style={styles.callout}onPress={() => onTitlePress({navigation})}>
+                  <View>
+                      <Text>{videosList[index].Title}</Text>
+                  </View>
+                </Callout>
          
             </Marker>                   
           ))}        
@@ -154,7 +174,7 @@ const MapComponent = ({videosList, navigation}) => {
 const styles = StyleSheet.create({
   mapContainer: {
     align: 'center',
-    flex: 1,
+   // flex: 1,
     width: '95%',
     height: '100%',
     marginLeft: '2.5%',
@@ -167,7 +187,7 @@ const styles = StyleSheet.create({
     width: width,
     height: height,
     position: 'absolute',
-    alignItems: 'center',
+  //  alignItems: 'center',
   },
   titleContainer: {
     //position: 'absolute',
@@ -207,6 +227,15 @@ const styles = StyleSheet.create({
   TouchableOpacity: {
    // backgroundColor: 'blue'
   },
+  callout: {
+    //backgroundColor: 'blue',
+    overflow: 'visible',
+    flex: 1,
+    width: '400%',
+   
+    
+  },
+
  
 });
 export default MapComponent;
