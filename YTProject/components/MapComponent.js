@@ -19,6 +19,7 @@ const MapComponent = ({videosList, navigation}) => {
 
   const route = useRoute();
   const currentRoute = route.name; 
+  
   const getIconColor = (pageName) => {
     return currentRoute === pageName ? 'orange' : '#fff';
   };

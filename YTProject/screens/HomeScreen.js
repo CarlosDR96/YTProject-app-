@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput } from 'react-native';
 import ViewTypeSelector from '../components/ViewTypeSelector';
 import NavigationComponent from '../components/NavigationComponent';
 import NavBar from '../components/NavBar';
@@ -19,7 +19,7 @@ import TouchableCard from '../components/TouchableCard';
 import { loadFavorites, saveFavorites } from '../storage/AsyncStorageHelper';
 import VideoManager from '../utils/VideoManager';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
@@ -32,6 +32,9 @@ const HomeScreen = ({ navigation }) => {
     setIsPressed(!isPressed); // Cambia el estado al presionar
   };
 
+  const onClosePress = () => {
+    console.log("close");
+  };
 
   const onPress = ({navigation }) => {
     navigation.navigate('Details');
@@ -63,8 +66,11 @@ const HomeScreen = ({ navigation }) => {
 
   return  (
     <View style={styles.container}>
-      
+      {!isPressed ? (
         <Header imageSource={logo} />
+      ) : (
+        <View style={{ height: '20%' }} />
+      )}
       
       <View style={styles.rowContainer}>
           <TouchableOpacity onPress={handlePress}>
@@ -78,8 +84,29 @@ const HomeScreen = ({ navigation }) => {
       {/* Imagen de los filtros a la derecha */}
           <MaterialIcons name="filter-alt" size={40} color="white"/>
       </View>
+      {isPressed &&(
+        <View style={styles.searchContainer}>
+           <TextInput
+              placeholder="Escribe aquí lo que deseas buscar"
+              style={styles.input}
+              // Otros atributos y eventos según tus necesidades
+            />
+            <View style={styles.btnContainer}>
+              <View style={styles.closeContainer}>
+                <TouchableOpacity style={styles.TouchableOpacity} onPress={onClosePress}>
+                  <FontAwesome padding={2} name="close" size={30} color='red' />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.thumbsContainer}>
+                <TouchableOpacity style={styles.TouchableOpacity} /* onPress={() => onCheckPress({ navigation })}*/>
+                  <FontAwesome padding={2} name="check" size={30} color='green' />
+                </TouchableOpacity>
+              </View>
+            </View>
 
-
+        
+        </View>
+      )}
       {/* </View>
        <View style={styles.map}>
          {/* Imagen de la lupa a la izquierda 
@@ -95,7 +122,6 @@ const HomeScreen = ({ navigation }) => {
         )}
           <ViewTypeSelector onToggle={toggleViewType} selected={viewType}/>
       </View>*/}
-
       <View style={{flex: 1}}>
       {viewType === 'Map' && videosList && videosList.length > 0 ? 
           (

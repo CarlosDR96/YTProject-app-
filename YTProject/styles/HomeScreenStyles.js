@@ -35,6 +35,45 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 5,
   },
+  searchContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    position: 'absolute',
+    width: '90%',
+    margin: 20,
+    top: 55, // Ajusta la posición vertical del popover
+    left: 0, // Ajusta la posición horizontal del popover
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    padding: 8,
+    borderRadius: 15,
+  },
+  
+  btnContainer: {
+   // position: 'absolute',
+    flexDirection: 'row',
+   // backgroundColor: 'blue',
+   // top: '10%',
+   // margin: 15,
+    padding: 2,
+    justifyContent: 'space-evenly',
+    width: '100%',
+
+  },
+  closeContainer: {
+   // backgroundColor: 'red',
+    padding: 5,
+
+  },
+  thumbsContainer: {
+ //  backgroundColor: 'green',
+    padding: 5,
+
+  },
+  input: {
+    margin: 5,
+    marginBottom: 10,
+  }
 });
 
 export default styles;
