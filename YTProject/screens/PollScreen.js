@@ -18,17 +18,12 @@ const PollScreen = ({ navigation }) => {
     }
 
     useEffect(() => { // Funció que es crida al començar. Ve a ser un OnCreate d'Android/start()
-        // Función para obtener todos los usuarios
         VideoManager.subscribe(receivePollsData, 3);
-
-       // console.log(pollsList[0].Options)
       }, []);
     
   return (
     <View style={styles.container}>
-        <View style={styles.header}>
             <Header imageSource={logo} />
-        </View>
         <ScrollView>
             <View style={styles.body}>
                 {pollsList && pollsList.length > 0 ? (

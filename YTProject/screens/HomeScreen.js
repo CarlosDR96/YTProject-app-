@@ -63,9 +63,9 @@ const HomeScreen = ({ navigation }) => {
 
   return  (
     <View style={styles.container}>
-      <View style={styles.header}>
+      
         <Header imageSource={logo} />
-      </View>
+      
       <View style={styles.rowContainer}>
           <TouchableOpacity onPress={handlePress}>
               <View style={styles.icon}>

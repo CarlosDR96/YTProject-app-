@@ -177,9 +177,9 @@ const styles = StyleSheet.create({
     align: 'center',
    // flex: 1,
     width: '95%',
-    height: '97%',
+    height: '98%',
     marginLeft: '2.5%',
-    marginTop: '3%',
+    marginTop: '2%',
     padding: 20,
     borderRadius: 15, // Ajusta este valor para cambiar la curvatura de las esquinas
     borderWidth: 0,

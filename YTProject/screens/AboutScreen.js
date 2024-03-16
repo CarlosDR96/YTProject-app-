@@ -23,9 +23,9 @@ const AboutScreen = ({ navigation }) => {
 
   return (
     <View style={styles.aboutContainer}>
-       <View style={homeStyles.header}>
+       
         <Header imageSource={logo} />
-      </View>
+   
       <View style={styles.body}>
         <View style={styles.detailsContainer}>
           <Text style={styles.lbl}>Redes</Text>

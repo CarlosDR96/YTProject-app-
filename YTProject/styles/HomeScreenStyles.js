@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   //  paddingVertical: 20,
   },
   header: {
-    height: '20%',
+  //  height: '20%',
   },
   map: {
     //backgroundColor: 'blue',

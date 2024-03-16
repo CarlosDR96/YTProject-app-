@@ -59,9 +59,7 @@ const FavoritesScreen = ({ route, navigation }) => {
 
 return (
     <View style={styles.container}>
-        <View style={styles.header}>
             <Header imageSource={logo} />
-        </View>
         <Text style={styles.text1}>Favoritos</Text>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             {favoriteVideos.length > 0 && tagsList? (
