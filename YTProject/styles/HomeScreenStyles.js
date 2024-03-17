@@ -41,21 +41,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '90%',
     margin: 20,
-    top: 55, // Ajusta la posición vertical del popover
+    top: 50, // Ajusta la posición vertical del popover
     left: 0, // Ajusta la posición horizontal del popover
     backgroundColor: 'white',
     justifyContent: 'center',
     padding: 8,
     borderRadius: 15,
-  },
-  
+  },  
   btnContainer: {
    // position: 'absolute',
     flexDirection: 'row',
    // backgroundColor: 'blue',
    // top: '10%',
    // margin: 15,
-    padding: 2,
+    paddingTop: 7,
     justifyContent: 'space-evenly',
     width: '100%',
 
@@ -73,7 +72,39 @@ const styles = StyleSheet.create({
   input: {
     margin: 5,
     marginBottom: 10,
-  }
+  },
+  filterContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    position: 'absolute',
+    width: '90%',
+    margin: 20,
+    top: 50, // Ajusta la posición vertical del popover
+    left: 0, // Ajusta la posición horizontal del popover
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    padding: 8,
+    borderRadius: 15,
+    maxHeight: 110,
+
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 5,
+    marginTop: 3,
+  },
+  tagContainer: {
+    backgroundColor: 'grey',
+    borderRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    margin: 3,
+  },
+  tagText: {
+    color: 'white',
+    fontSize: 10, // Tamaño de la letra de los tags
+  },
 });
 
 export default styles;

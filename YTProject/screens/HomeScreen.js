@@ -26,10 +26,28 @@ const HomeScreen = ({ navigation }) => {
   const [videosList, setVideosList] = useState([]);
   const [tagsList, setTagsList] = useState([]);
   
-  const [isPressed, setIsPressed] = useState(false);
+  const [searchIsPressed, setSearchIsPressed] = useState(false);
+  const [filterIsPressed, setFilterIsPressed] = useState(false);
+  const [tagPressed, setTagPressed] = useState(false)
+  const [selectedTags, setSelectedTags] = useState([]);
 
-  const handlePress = () => {
-    setIsPressed(!isPressed); // Cambia el estado al presionar
+  const handleSearchPress = () => {
+    setSearchIsPressed(!searchIsPressed); // Cambia el estado al presionar
+  };
+
+  const handleFilterPress = () => {
+    setFilterIsPressed(!filterIsPressed);
+  };
+
+  const handleTagPress = (index) => {
+    // Verificar si el tag ya está seleccionado
+    if (selectedTags.includes(index)) {
+      // Si está seleccionado, quitarlo de la lista
+      setSelectedTags(selectedTags.filter((tagIndex) => tagIndex !== index));
+    } else {
+      // Si no está seleccionado, agregarlo a la lista
+      setSelectedTags([...selectedTags, index]);
+    }
   };
 
   const onClosePress = () => {
@@ -66,25 +84,31 @@ const HomeScreen = ({ navigation }) => {
 
   return  (
     <View style={styles.container}>
-      {!isPressed ? (
+      {!searchIsPressed && !filterIsPressed ? (
         <Header imageSource={logo} />
       ) : (
         <View style={{ height: '20%' }} />
       )}
       
       <View style={styles.rowContainer}>
-          <TouchableOpacity onPress={handlePress}>
+          <TouchableOpacity onPress={handleSearchPress}>
               <View style={styles.icon}>
-                <MaterialIcons name="search" size={43} style={{ color: isPressed ? 'orange' : 'white' }} />
+                  <MaterialIcons name="search" size={43} style={{ color: searchIsPressed ? 'orange' : 'white' }} />
               </View>
           </TouchableOpacity>
           <View>
-              <ViewTypeSelector onToggle={toggleViewType} selected={viewType}/>
+                <ViewTypeSelector onToggle={toggleViewType} selected={viewType}/>
           </View>
       {/* Imagen de los filtros a la derecha */}
-          <MaterialIcons name="filter-alt" size={40} color="white"/>
+          <TouchableOpacity onPress={handleFilterPress}>
+              <View style={styles.icon}>
+                  <MaterialIcons name="filter-alt" size={40}  style={{ color: filterIsPressed ? 'orange' : 'white' }}/>
+              </View>
+          </TouchableOpacity>
       </View>
-      {isPressed &&(
+
+
+      {searchIsPressed &&(
         <View style={styles.searchContainer}>
            <TextInput
               placeholder="Escribe aquí lo que deseas buscar"
@@ -107,7 +131,43 @@ const HomeScreen = ({ navigation }) => {
         
         </View>
       )}
-      {/* </View>
+
+
+      {filterIsPressed && (
+        <View style={styles.filterContainer}>
+          <ScrollView style={{flexDirection: 'column'}}>
+            <View style={styles.tagsContainer}>
+              {tagsList.map((tag, index) => (
+                 <TouchableOpacity key={index} onPress={() => handleTagPress(index)}>
+                 <View
+                   key={index}
+                   style={[
+                     styles.tagContainer,
+                     {
+                       backgroundColor: selectedTags.includes(index) ? 'black' : 'grey',
+                     },
+                   ]}
+                 >
+                   <Text style={styles.tagText}>{tag}</Text>
+                 </View>
+               </TouchableOpacity>
+              ))}
+            </View>
+      
+          </ScrollView>
+          
+        </View>
+      )}
+      {/*
+
+       <Tags tags={tagsList}></Tags>
+      
+      {tagsList.map((tag, index) => (
+          <TouchableOpacity key={index} style={styles.tagContainer}>
+              <Text style={styles.tagText}>{tag}</Text>
+          </TouchableOpacity>
+           ))}
+      </View>
        <View style={styles.map}>
          {/* Imagen de la lupa a la izquierda 
         <TouchableOpacity onPress={handlePress}>

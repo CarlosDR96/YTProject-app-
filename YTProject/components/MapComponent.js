@@ -69,11 +69,6 @@ const MapComponent = ({videosList, navigation}) => {
     console.log('check clicked');
   };
 */
-  const onClosePress = () => {
-    setMarkerTitle(false);
-    setMarkerImages(videosList.map(() => require('../img/Pin.png')));
-  };
-
   useEffect(() => {
     const filteredLocations = videosList
       .filter((video) => video.Geopoint !== null && video.Geopoint !== undefined)
@@ -95,7 +90,6 @@ const MapComponent = ({videosList, navigation}) => {
           >
             
           {locationsList.map((location, index) => (
-             
             <Marker
               key={index}
               coordinate={{ latitude: location.latitude, longitude: location.longitude }}
