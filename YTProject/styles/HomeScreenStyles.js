@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     flex: 1,
     flexDirection: 'column',
-    position: 'absolute',
+   // position: 'absolute',
     width: '90%',
     margin: 20,
     top: 50, // Ajusta la posición vertical del popover
@@ -76,16 +76,16 @@ const styles = StyleSheet.create({
   filterContainer: {
     flex: 1,
     flexDirection: 'column',
-    position: 'absolute',
+   // position: 'absolute',
     width: '90%',
-    margin: 20,
+    //margin: 20,
     top: 50, // Ajusta la posición vertical del popover
     left: 0, // Ajusta la posición horizontal del popover
     backgroundColor: 'white',
     justifyContent: 'center',
-    padding: 8,
+    padding: 10,
     borderRadius: 15,
-    maxHeight: 110,
+    maxHeight: 130,
 
   },
   tagsContainer: {
@@ -105,6 +105,25 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 10, // Tamaño de la letra de los tags
   },
+  filterOptions: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+
+  },
+  optionContainer: {
+    backgroundColor: 'grey',
+    borderRadius: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    margin: 5,
+    top: 5,
+    bottom: 5,
+
+  },
+  optionText: {
+    color: 'white',
+  }
+
 });
 
 export default styles;

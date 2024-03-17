@@ -20,6 +20,7 @@ import { loadFavorites, saveFavorites } from '../storage/AsyncStorageHelper';
 import VideoManager from '../utils/VideoManager';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/FontAwesome';
 
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
@@ -109,54 +110,82 @@ const HomeScreen = ({ navigation }) => {
 
 
       {searchIsPressed &&(
-        <View style={styles.searchContainer}>
-           <TextInput
-              placeholder="Escribe aquí lo que deseas buscar"
-              style={styles.input}
-              // Otros atributos y eventos según tus necesidades
-            />
-            <View style={styles.btnContainer}>
-              <View style={styles.closeContainer}>
-                <TouchableOpacity style={styles.TouchableOpacity} onPress={onClosePress}>
-                  <FontAwesome padding={2} name="close" size={30} color='red' />
-                </TouchableOpacity>
+        <View style={{position: 'absolute', flex: 1, width: '100%', alignItems: 'center'}}>
+          <View style={styles.searchContainer}>
+            <TextInput
+                placeholder="Escribe aquí lo que deseas buscar"
+                style={styles.input}
+                // Otros atributos y eventos según tus necesidades
+              />
+              <View style={styles.btnContainer}>
+                <View style={styles.closeContainer}>
+                  <TouchableOpacity style={styles.TouchableOpacity} onPress={onClosePress}>
+                    <FontAwesome padding={2} name="close" size={30} color='red' />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.thumbsContainer}>
+                  <TouchableOpacity style={styles.TouchableOpacity} /* onPress={() => onCheckPress({ navigation })}*/>
+                    <FontAwesome padding={2} name="check" size={30} color='green' />
+                  </TouchableOpacity>
+                </View>
               </View>
-              <View style={styles.thumbsContainer}>
-                <TouchableOpacity style={styles.TouchableOpacity} /* onPress={() => onCheckPress({ navigation })}*/>
-                  <FontAwesome padding={2} name="check" size={30} color='green' />
-                </TouchableOpacity>
-              </View>
-            </View>
-
-        
+          </View>        
         </View>
       )}
 
 
       {filterIsPressed && (
+      <View style={{position: 'absolute', flex: 1, width: '100%', alignItems: 'center'}}>
         <View style={styles.filterContainer}>
           <ScrollView style={{flexDirection: 'column'}}>
             <View style={styles.tagsContainer}>
               {tagsList.map((tag, index) => (
-                 <TouchableOpacity key={index} onPress={() => handleTagPress(index)}>
-                 <View
-                   key={index}
-                   style={[
-                     styles.tagContainer,
-                     {
-                       backgroundColor: selectedTags.includes(index) ? 'black' : 'grey',
-                     },
-                   ]}
-                 >
-                   <Text style={styles.tagText}>{tag}</Text>
-                 </View>
-               </TouchableOpacity>
+                <TouchableOpacity key={index} onPress={() => handleTagPress(index)}>
+                  <View
+                    key={index}
+                    style={[
+                      styles.tagContainer,
+                      {
+                        backgroundColor: selectedTags.includes(index) ? 'black' : 'grey',
+                      },
+                    ]}
+                  >
+                    <Text style={styles.tagText}>{tag}</Text>
+                  </View>
+                </TouchableOpacity>
               ))}
+              {tagsList.map((tag, index) => (
+                <TouchableOpacity key={index} onPress={() => handleTagPress(index)}>
+                  <View
+                    key={index}
+                    style={[
+                      styles.tagContainer,
+                      {
+                        backgroundColor: selectedTags.includes(index) ? 'black' : 'grey',
+                      },
+                    ]}
+                  >
+                    <Text style={styles.tagText}>{tag}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <View style={styles.filterOptions}>
+              <TouchableOpacity>
+                  <View style={styles.optionContainer}>
+                      <Text style={styles.optionText}>Aceptar selección</Text>
+                  </View>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                  <View style={styles.optionContainer}>
+                      <Text style={styles.optionText}>Borrar selección</Text>
+                  </View>
+              </TouchableOpacity>
             </View>
       
           </ScrollView>
-          
         </View>
+      </View>
       )}
       {/*
 
