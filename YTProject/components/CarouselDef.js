@@ -19,7 +19,7 @@ function CarouselDef({ fotos }) {
     fotos && fotos.length > 0 ? fotos.map((url) => ({ imageUrl: url })) : [];
 
   return (
-    <View style={{ position: 'relative', height: 200 }}>
+    <View style={{ position: 'relative', height: 240 }}>
       <CustomCarousel images={images} onImagePress={handleImagePress} />
       <Modal transparent animationType="slide" visible={modalVisible}>
         <View style={{ flex: 1 }}>

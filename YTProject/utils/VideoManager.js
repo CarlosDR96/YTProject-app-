@@ -25,7 +25,7 @@ class VideoManager {
           const tagsSnapshot = await getDocs(tagsCol);
           const tagsListData = tagsSnapshot.docs.map(doc => doc.data());
           this.tagsData = tagsListData[0].Values;
-          console.log("Video manager TAGS " + this.tagsData[0])
+       //   console.log("Video manager TAGS " + this.tagsData[0])
 
           if (this.observer != null){
              this.observer(this.tagsData)

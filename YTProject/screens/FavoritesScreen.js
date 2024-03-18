@@ -3,8 +3,6 @@ import { View, Text, ScrollView, ActivityIndicator, StyleSheet } from 'react-nat
 import { loadFavorites } from '../storage/AsyncStorageHelper';
 import NavBar from '../components/NavBar';
 import TouchableCard from '../components/TouchableCard';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
 import styles from '../styles/FavoritesScreenStyles';
 import Header from '../components/Header';
 import logo from '../img/SezarBlueLogo.png';
@@ -32,7 +30,7 @@ const FavoritesScreen = ({ route, navigation }) => {
     const fetchFavorites = async () => {
       try {
         const favoritesData = await loadFavorites();
-        console.log('VIDEOS LIST FINAL: ', restaurants);
+        //console.log('VIDEOS LIST FINAL: ', restaurants);
         let aux = [];
         videosList.forEach(videoData => {
           favoritesData.forEach(fav => {
@@ -41,12 +39,9 @@ const FavoritesScreen = ({ route, navigation }) => {
             }
           });
         });
-        console.log('Favorites Final:', aux);
+      //  console.log('Favorites Final:', aux);
         setFavoriteVideos(aux);
-        const tagsCol = collection(db, "Tags");
-        const tagsSnapshot = await getDocs(tagsCol);
-        const tagsListData = tagsSnapshot.docs.map(doc => doc.data());
-        setTagsList(tagsListData[0].Values);
+
         setLoading(false); // Marcar que los favoritos se han cargado
       } catch (error) {
         console.error('Error al cargar favoritos:', error);
@@ -59,15 +54,6 @@ const FavoritesScreen = ({ route, navigation }) => {
     navigation.navigate('Details', { videoData });
   };
   
-
-  if (loading) {
-    // Muestra un indicador de carga mientras se cargan los favoritos
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
