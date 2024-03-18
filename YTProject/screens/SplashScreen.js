@@ -36,7 +36,6 @@ const SplashScreen = () => {
 
     loadFonts();
     
-    playSound();
     chooseRandomText(); // Escoge un texto aleatorio al renderizar
 
     const timer = setTimeout(() => {

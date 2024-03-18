@@ -4,11 +4,13 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import MapView, { Callout, Marker} from 'react-native-maps';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import markerPin from '../img/Pin.png'
 
 const { width, height } = Dimensions.get('window');
 
 const MapComponent = ({ videosList, navigation }) => {
   const [locationsList, setLocationsList] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(null);
 
   const [currentLocation, setCurrentLocation] = useState(null);
 
@@ -50,7 +52,8 @@ const MapComponent = ({ videosList, navigation }) => {
           onPress: () => {
             // Navegar a la pantalla de detalles aquí
             console.log(currentIndex);
-            navigation.navigate('Details', { currentIndex });
+            const videoData = videosList[currentIndex];
+            navigation.navigate('Details', { videoData });
     
           },
         },
@@ -94,7 +97,7 @@ const MapComponent = ({ videosList, navigation }) => {
               >
                
                 <Image
-                    source={markerImages[index]}
+                    source={markerPin}
                     style={{ width: 30, height: 38 }} // Ajusta los valores según tus necesidades
                   />
                         {/*  {videosList[index].Title} */}

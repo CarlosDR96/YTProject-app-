@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableWithoutFeedback, Modal, TouchableOpacity, } from 'react-native';
 import logo from '../img/SezarBlueLogo.png';
 import Header from '../components/Header';
@@ -8,16 +8,14 @@ import YoutubeVideo from '../components/YoutubeVideo';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import CarouselDef from '../components/CarouselDef';
-
+import VideoManager from '../utils/VideoManager';
 
 
 const DetailsScreen = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { params } = route;
   const videoData = params ? params.videoData : null;
-  const tagsIndex = params ? params.tagsIndex : null;
-  const tagsList = params ? params.tagsList : null;
-
+  const [tagsList, setTagsList] = useState([]);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isFavPressed, setIsFavPressed] = useState(false);
 
@@ -33,7 +31,15 @@ const DetailsScreen = ({ route, navigation }) => {
   const handleImagePress = () => {
     setModalVisible(!modalVisible);
   };
-  
+
+  const recieveTagsData = (data) => {
+    setTagsList(data)
+  }
+
+  useEffect(() => { 
+    VideoManager.subscribe(recieveTagsData, 2);
+
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -54,9 +60,8 @@ const DetailsScreen = ({ route, navigation }) => {
           </TouchableWithoutFeedback>
         </View>
       </Modal>
-        <View style={styles.header}>
+        
           <Header imageSource={logo} />
-        </View>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{videoData.Title}</Text>
@@ -95,6 +100,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: '#1B1212',
   },
   header: {
     height: '20%',
