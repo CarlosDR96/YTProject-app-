@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     width: '100%',
-  //  backgroundColor: 'blue',
+   // backgroundColor: 'blue',
 
   },
   titulo: {

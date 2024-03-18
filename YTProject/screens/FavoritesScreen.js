@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, ActivityIndicator, StyleSheet } from 'react-native';
 import { loadFavorites } from '../storage/AsyncStorageHelper';
 import NavBar from '../components/NavBar';
 import TouchableCard from '../components/TouchableCard';
@@ -9,84 +9,96 @@ import styles from '../styles/FavoritesScreenStyles';
 import Header from '../components/Header';
 import logo from '../img/SezarBlueLogo.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import VideoManager from '../utils/VideoManager';
 
 const FavoritesScreen = ({ route, navigation }) => {
-  const { restaurants } = route.params; // Obté restaurants de route.params
+  const { restaurants } = route.params; // Obtén restaurants de route.params
   const [favoriteVideos, setFavoriteVideos] = useState([]);
   const [tagsList, setTagsList] = useState([]);
+  const [videosList, setVideosList] = useState([]);
+  const [loading, setLoading] = useState(true); // Estado para indicar si los favoritos se están cargando
+
+  const recieveVideoData = (data) => {
+    setVideosList(data);
+  };
+  
+  const recieveTagsData = (data) => {
+    setTagsList(data);
+  };
 
   useEffect(() => {
+    VideoManager.subscribe(recieveVideoData, 1); 
+    VideoManager.subscribe(recieveTagsData, 2);
     const fetchFavorites = async () => {
       try {
         const favoritesData = await loadFavorites();
-       
         console.log('VIDEOS LIST FINAL: ', restaurants);
-        // Verifica que restaurants esté definido antes de usarlo
         let aux = [];
-       
-        restaurants.forEach(video => {
-         
+        videosList.forEach(videoData => {
           favoritesData.forEach(fav => {
-            if (fav === video.id)
-              aux.push(video);
-            });
+            if (fav === videoData.id) {
+              aux.push(videoData);
+            }
+          });
         });
-         console.log('Favorites Final:', aux);
-
+        console.log('Favorites Final:', aux);
         setFavoriteVideos(aux);
-
         const tagsCol = collection(db, "Tags");
         const tagsSnapshot = await getDocs(tagsCol);
         const tagsListData = tagsSnapshot.docs.map(doc => doc.data());
         setTagsList(tagsListData[0].Values);
-
+        setLoading(false); // Marcar que los favoritos se han cargado
       } catch (error) {
         console.error('Error al cargar favoritos:', error);
       }
     };
-
     fetchFavorites();
-  }, []);
+  }, [videosList]); // Asegurarse de que la carga de favoritos se vuelva a hacer si cambia la lista de videos
 
-
-
-
-  const onPress = () => {
-    navigation.navigate('Details');
+  const onPress = (videoData) => {
+    navigation.navigate('Details', { videoData });
   };
-
   
 
-return (
+  if (loading) {
+    // Muestra un indicador de carga mientras se cargan los favoritos
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
+  return (
     <View style={styles.container}>
-            <Header imageSource={logo} />
-        <Text style={styles.text1}>Favoritos</Text>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-            {favoriteVideos.length > 0 && tagsList? (
-            favoriteVideos.map((video, index) => (
+      <Header imageSource={logo} />
+      <Text style={styles.text1}>Favoritos</Text>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        {favoriteVideos.length > 0 && tagsList ? (
+          favoriteVideos.map((videoData, index) => (
             <View key={index} style={styles.videoItem}>
-                <TouchableCard
-                    onPress={onPress}
-                    key={index}
-                    title={video.Title}
-                    tags={video.Tags}
-                    tagsList={tagsList}
-                    desc={video.Address}
-                    sourceImg={video.Youtube}
-                />
+              <TouchableCard
+              onPress={() => onPress(videoData)} // Pasar videoData al hacer clic
+              key={index}
+              title={videoData.Title}
+              tags={videoData.Tags}
+              tagsList={tagsList}
+              desc={videoData.Address}
+              sourceImg={videoData.Youtube}
+            />
+
             </View>
-            ))
+          ))
         ) : (
-        <View style={styles.iconContainer}>
+          <View style={styles.iconContainer}>
             <MaterialIcons name="highlight-off" size={60} color='white' />
             <Text style={styles.text2}>No hay vídeos favoritos disponibles</Text>
-        </View>
+          </View>
         )}
-        </ScrollView>
-        <NavBar navigation={navigation} />
+      </ScrollView>
+      <NavBar navigation={navigation} />
     </View>
   );
 };
-
 
 export default FavoritesScreen;

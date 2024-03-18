@@ -38,12 +38,6 @@ const SplashScreen = () => {
     
     chooseRandomText(); // Escoge un texto aleatorio al renderizar
 
-    const timer = setTimeout(() => {
-      // Navegar a la pantalla Home después de x segundos
-      console.log('go to home')
-      navigation.navigate('Home');
-    }, 8000); // segundos en milisegundos
-
     if (fontsLoaded) {
       chooseRandomText();
 

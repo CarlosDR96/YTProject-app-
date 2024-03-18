@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         width: '60%', // Ajusta según tus necesidades
         height: '50%',
         aspectRatio: 1.4, // Relación de aspecto (ancho / alto)
-        marginTop: '10%',
+        marginTop: '15%',
         // Otros estilos según tus necesidades*/
       
       },
