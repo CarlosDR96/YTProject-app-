@@ -54,7 +54,7 @@ const AboutScreen = ({ navigation }) => {
         <View style={styles.detailsContainer}>
         <Text style={styles.lbl}>Desarrolado por</Text>
         <View style={styles.line}/>
-        <View style={styles.iconContainer}>
+          <View style={styles.iconContainer}>
             <FontistoIcons padding={15} name="instagram" size={30} color={getIconColor('instagram')} />
             <Text style={styles.text}>@SezarBlue</Text>
           </View>
@@ -66,8 +66,6 @@ const AboutScreen = ({ navigation }) => {
             <Ionicons padding={15} name="logo-youtube" size={30} color={getIconColor('logo-youtube')} />
             <Text style={styles.text}>@SezarBlue</Text>
           </View> 
-         
-   
         </View>
 
       </View>

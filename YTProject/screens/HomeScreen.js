@@ -86,7 +86,7 @@ const HomeScreen = ({ navigation }) => {
         <Header imageSource={logo} />
       </View>
       <View style={styles.map}>
-        <ViewTypeSelector onToggle={toggleViewType} selected={viewType}/>
+        <ViewTypeSelector onToggle={toggleViewType} selected={viewType} videosList={videosList}/>
       </View>
 
       <View style={{flex: 1}}>
