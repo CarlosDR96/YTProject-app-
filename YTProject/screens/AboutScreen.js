@@ -42,7 +42,9 @@ const AboutScreen = ({ navigation }) => {
 
         </View>
         <View style={styles.detailsContainer}>
+
         <Text style={styles.lbl}>Desarrolladores</Text>
+
         <View style={styles.line}/>
         <View style={styles.devContainer}>
             <FontAwesome5 padding={10} name="users" size={30} color={getIconColor('users')} />

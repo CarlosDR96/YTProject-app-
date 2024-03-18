@@ -1,27 +1,39 @@
 import React, { useEffect, useState }from 'react';
-import { Dimensions, StyleSheet, View, Image, Alert, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Dimensions, StyleSheet, View, Image, TouchableOpacity, Alert, Text } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import * as Location from 'expo-location';
 import MapView, { Callout, Marker} from 'react-native-maps';
-import { useRoute } from '@react-navigation/native';
-const { width, height } = Dimensions.get('window');
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const MapComponent = ({videosList, navigation}) => {
+const { width, height } = Dimensions.get('window');
+
+const MapComponent = ({ videosList, navigation }) => {
   const [locationsList, setLocationsList] = useState([]);
-  const [markerTitle, setMarkerTitle] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [title, setTitle] = useState("");
-    // Estado para almacenar la imagen de cada marcador
-  const [markerImages, setMarkerImages] = useState(
-      videosList.map(() => require('../img/Pin.png'))
-    );
 
-  const route = useRoute();
-  const currentRoute = route.name; 
-  
-  const getIconColor = (pageName) => {
-    return currentRoute === pageName ? 'orange' : '#fff';
+  const [currentLocation, setCurrentLocation] = useState(null);
+
+  const onMarkerPress = (videoData) => {
+    navigation.navigate('Details', { videoData });
+  };
+
+  const getCurrentLocation = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      setCurrentLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+    } catch (error) {
+      console.error('Error getting current location:', error);
+    }
   };
 
   const onTitlePress = ({navigation}) => {
@@ -46,35 +58,16 @@ const MapComponent = ({videosList, navigation}) => {
     );
 
     };
-    /*Alert.alert(
-      'Confirmación',
-      `¿Quieres ver los detalles del video?`,
-      [
-        {
-          text: 'Cancelar',
-          style: 'cancel',
-        },
-        {
-          text: 'Sí',
-          onPress: () => {
-            // Navegar a la pantalla de detalles aquí
-            console.log(currentIndex);
-            navigation.navigate('Details', { currentIndex });
-    
-          },
-        },
-      ],
-    );
-    //navigation.navigate('Details');
-    console.log('check clicked');
-  };
-*/
+
   useEffect(() => {
     const filteredLocations = videosList
       .filter((video) => video.Geopoint !== null && video.Geopoint !== undefined)
       .map((video) => video.Geopoint);
 
     setLocationsList(filteredLocations);
+
+    // Obtener la ubicación actual al cargar el componente
+    getCurrentLocation();
   }, [videosList]);
 
   return (
@@ -93,42 +86,10 @@ const MapComponent = ({videosList, navigation}) => {
             <Marker
               key={index}
               coordinate={{ latitude: location.latitude, longitude: location.longitude }}
-              //title={videosList[index].Title}
               onPress={() => {
                 console.log('pin clicked: ' + videosList[index].Title);
                 setCurrentIndex(index);
-             /*   Alert.alert(
-                  'Confirmación',
-                  `¿Quieres ver los detalles del video?`,
-                  [
-                    {
-                      text: 'Cancelar',
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'Sí',
-                      onPress: () => {
-                        // Navegar a la pantalla de detalles aquí
-                        console.log(currentIndex);
-                        navigation.navigate('Details', { currentIndex });
-                
-                      },
-                    },
-                  ],
-                );
-               /* setMarkerTitle(true);
-                setCurrentIndex(index);
-              
-                setTitle(videosList[index].Title);
-                // 1. Restaurar la imagen original para todos los marcadores
-                const originalImages = videosList.map(() => require('../img/Pin.png'));
-                setMarkerImages(originalImages);
-
-                // 2. Cambiar la imagen solo para el marcador seleccionado
-                const updatedImages = [...originalImages];
-                updatedImages[index] = require('../img/OrangePin.png');
-                setMarkerImages(updatedImages);*/
-              
+            
               }}
               >
                
@@ -146,31 +107,18 @@ const MapComponent = ({videosList, navigation}) => {
             </Marker>                   
           ))}        
       </MapView>
-      {/*markerTitle && (
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>{title}</Text>
-            <View style={styles.btnContainer}>
-              <View style={styles.closeContainer}>
-                <TouchableOpacity style={styles.TouchableOpacity} onPress={onClosePress}>
-                  <FontAwesome padding={2} name="close" size={35} color='red' />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.thumbsContainer}>
-                <TouchableOpacity style={styles.TouchableOpacity}  onPress={() => onCheckPress({ navigation })}>
-                  <FontAwesome padding={2} name="check" size={35} color='green' />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-      )*/}
+      {/* Botón para centrar el mapa en la ubicación actual */}
+      <TouchableOpacity style={styles.centerButton} onPress={getCurrentLocation}>
+        <Text style={styles.centerButtonText}>Centrar Mapa</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   mapContainer: {
-    align: 'center',
-   // flex: 1,
+    alignItems: 'center',  // En lugar de "align"
+    flex: 1,
     width: '95%',
     height: '98%',
     marginLeft: '2.5%',
@@ -180,6 +128,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     overflow: 'hidden', // Importante para que las esquinas redondeadas se muestren correctamente
   },
+  
   map: {
     width: width,
     height: height,
@@ -232,7 +181,19 @@ const styles = StyleSheet.create({
    
     
   },
+  centerButton: {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+    backgroundColor: '#3498db',
+    padding: 10,
+    borderRadius: 5,
+  },
+  centerButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
 
- 
 });
+
 export default MapComponent;

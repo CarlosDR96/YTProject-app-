@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TextInput } from 'react-native';
 import ViewTypeSelector from '../components/ViewTypeSelector';
 import NavigationComponent from '../components/NavigationComponent';
 import NavBar from '../components/NavBar';
-import Card from '../components/Card'
+import Card from '../components/Card';
 import Tags from '../components/Tags';
 import MapView from 'react-native-maps';
 import Header from '../components/Header'; // Importa el componente Header
@@ -55,10 +55,11 @@ const HomeScreen = ({ navigation }) => {
     console.log("close");
   };
 
-  const onPress = ({navigation }) => {
-    navigation.navigate('Details');
+  const onPress = (item, index) => {
+    navigation.navigate('Details', { videoData: item, tagsIndex: index, tagsList });
     console.log('card clicked');
-  };
+  };   
+ 
 
   const toggleViewType = (newType) => {
     if (newType !== viewType) {
@@ -220,13 +221,19 @@ const HomeScreen = ({ navigation }) => {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
               {videosList && tagsList.length > 0 ? (
                 videosList.map((item, index) => (
-                      <TouchableCard  onPress={() => onPress({ navigation })} key={index} title={item.Title} tags={item.Tags} tagsList={tagsList}
-                      desc={item.Description} sourceImg={item.Youtube}/>
+                  <TouchableCard
+                    onPress={() => onPress(item, index)} // Pass the entire video data
+                    key={index}
+                    title={item.Title}
+                    tags={item.Tags}
+                    tagsList={tagsList}
+                    desc={item.Description}
+                    sourceImg={item.Youtube}
+                  />
                 ))
               ) : (
                 <Text style={styles.titulo}>Cargando...</Text>
               )}
-          
             </ScrollView>
           )
         }
