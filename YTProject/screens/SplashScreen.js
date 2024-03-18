@@ -74,7 +74,7 @@ const SplashScreen = () => {
         setTimeout(async () => {
           await sound.stopAsync();
           navigation.navigate('Home');
-        }, 8000);
+        }, 80);
       };
 
       playIntroAudio();

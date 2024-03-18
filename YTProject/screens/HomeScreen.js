@@ -1,26 +1,17 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, TextInput } from 'react-native';
 import ViewTypeSelector from '../components/ViewTypeSelector';
-import NavigationComponent from '../components/NavigationComponent';
 import NavBar from '../components/NavBar';
-import Card from '../components/Card';
-import Tags from '../components/Tags';
-import MapView from 'react-native-maps';
 import Header from '../components/Header'; // Importa el componente Header
 import logo from '../img/SezarBlueLogo.png';
 import MapComponent from '../components/MapComponent';
 import styles from '../styles/HomeScreenStyles'; // Adjust the import path as necessary
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
-import { useRoute } from '@react-navigation/native';
-import { db } from '../firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
 import TouchableCard from '../components/TouchableCard';
-import { loadFavorites, saveFavorites } from '../storage/AsyncStorageHelper';
 import VideoManager from '../utils/VideoManager';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import AntDesign from 'react-native-vector-icons/FontAwesome';
+import SuggestionBox from '../components/SuggestionBox';
 
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
@@ -32,8 +23,45 @@ const HomeScreen = ({ navigation }) => {
   const [tagPressed, setTagPressed] = useState(false)
   const [selectedTags, setSelectedTags] = useState([]);
 
+  const [searchMode, setSearchMode] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+
+  const enterSearchMode = () => {
+    setSearchMode(true);
+  };
+
+  const exitSearchMode = () => {
+    setSearchMode(false);
+    setSearchQuery('');
+    setSuggestions([]);
+  };
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+
+    // Filter restaurant names from videosList that match the query
+    const matchedRestaurants = videosList.filter(video =>
+      video.Restaurant.toLowerCase().includes(query.toLowerCase())
+    );
+
+    // Update suggestions with matched restaurant names
+    setSuggestions(matchedRestaurants.map(video => video.Restaurant));
+  };
+
+  const handleSelectSuggestion = (restaurantName) => {
+    // Set the search query to the selected suggestion
+    setSearchQuery(restaurantName);
+
+    // Clear suggestions
+    setSuggestions([]);
+  };
+
+
+
   const handleSearchPress = () => {
-    setSearchIsPressed(!searchIsPressed); // Cambia el estado al presionar
+    setSearchIsPressed(true); // Cambia el estado al presionar
+    setSearchMode(true)
   };
 
   const handleFilterPress = () => {
@@ -74,6 +102,10 @@ const HomeScreen = ({ navigation }) => {
     setTagsList(data)
   }
 
+  const handleClear = () => {
+    setSearchQuery('');
+  };
+
   
   useEffect(() => { 
     VideoManager.subscribe(recieveVideoData, 1); 
@@ -111,19 +143,37 @@ const HomeScreen = ({ navigation }) => {
 
 
       {searchIsPressed &&(
+
         <View style={{position: 'absolute', flex: 1, width: '100%', alignItems: 'center'}}>
           <View style={styles.searchContainer}>
-            <TextInput
-                placeholder="Escribe aquí lo que deseas buscar"
-                style={styles.input}
-                // Otros atributos y eventos según tus necesidades
+            <View style={styles.inputcontainer}>
+              <TextInput
+                  placeholder="Escribe aquí lo que deseas buscar"
+                  style={styles.input}
+                  value={searchQuery}
+                  onChangeText={(text) => handleSearch(text)}
+                  // Otros atributos y eventos según tus necesidades
+                />
+                {searchQuery !== '' && (
+                <TouchableOpacity style={styles.clearButton} onPress={() => handleClear()}>
+                  <FontAwesome name="times-circle" size={20} color="gray" />
+                </TouchableOpacity>
+              )}
+                {suggestions.length > 0 && (
+              <SuggestionBox
+                suggestions={suggestions}
+                onSelectSuggestion={handleSelectSuggestion}
               />
+            )}
+            </View>
+
               <View style={styles.btnContainer}>
                 <View style={styles.closeContainer}>
                   <TouchableOpacity style={styles.TouchableOpacity} onPress={onClosePress}>
                     <FontAwesome padding={2} name="close" size={30} color='red' />
                   </TouchableOpacity>
                 </View>
+                <View style={styles.separator}></View>
                 <View style={styles.thumbsContainer}>
                   <TouchableOpacity style={styles.TouchableOpacity} /* onPress={() => onCheckPress({ navigation })}*/>
                     <FontAwesome padding={2} name="check" size={30} color='green' />

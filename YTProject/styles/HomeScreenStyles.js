@@ -45,13 +45,36 @@ const styles = StyleSheet.create({
     left: 0, // Ajusta la posición horizontal del popover
     backgroundColor: 'white',
     justifyContent: 'center',
-    padding: 8,
+    padding: 0,
     borderRadius: 15,
   },  
+  inputcontainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginTop: 10,
+  },
+  input: {
+    flex: 1,
+    height: 40,
+  },
+  clearButton: {
+    padding: 5,
+    marginBottom: 5,
+  },
+  separator: {
+    width: 1, // Ajusta el ancho del separador según tu diseño
+    height: '80%', // Ajusta la altura del separador según tu diseño
+    backgroundColor: 'gray', // Color del separador
+  },
   btnContainer: {
    // position: 'absolute',
     flexDirection: 'row',
-   // backgroundColor: 'blue',
+    backgroundColor: '#d3d3d3',
+    borderBottomEndRadius: 15,
+    borderBottomLeftRadius:15,
    // top: '10%',
    // margin: 15,
     paddingTop: 7,

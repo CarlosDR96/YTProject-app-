@@ -174,9 +174,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     marginBottom: 10,
   },
-  navigation: {
-    height: '10%',
-  },
 
   carouselImage: {
     width: 300,
