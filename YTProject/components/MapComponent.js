@@ -1,18 +1,19 @@
-import React, { useEffect, useState }from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Dimensions, StyleSheet, View, Image, TouchableOpacity, Alert, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import MapView, { Callout, Marker} from 'react-native-maps';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import markerPin from '../img/Pin.png'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import markerPin from '../img/Pin.png';
 
 const { width, height } = Dimensions.get('window');
 
 const MapComponent = ({ videosList, navigation }) => {
   const [locationsList, setLocationsList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(null);
-
   const [currentLocation, setCurrentLocation] = useState(null);
+
+  const mapRef = useRef(null); // Referencia al mapa
 
   const onMarkerPress = (videoData) => {
     navigation.navigate('Details', { videoData });
@@ -28,6 +29,14 @@ const MapComponent = ({ videosList, navigation }) => {
 
       const location = await Location.getCurrentPositionAsync({});
       setCurrentLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+
+      // Centrar el mapa en la ubicación actual
+      mapRef.current.animateToRegion({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
         latitudeDelta: 0.0922,
@@ -50,17 +59,14 @@ const MapComponent = ({ videosList, navigation }) => {
         {
           text: 'Sí',
           onPress: () => {
-            // Navegar a la pantalla de detalles aquí
             console.log(currentIndex);
             const videoData = videosList[currentIndex];
             navigation.navigate('Details', { videoData });
-    
           },
         },
       ],
     );
-
-    };
+  };
 
   useEffect(() => {
     const filteredLocations = videosList
@@ -75,71 +81,65 @@ const MapComponent = ({ videosList, navigation }) => {
 
   return (
     <View style={styles.mapContainer}>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: 40.4637,
-            longitude: -3.7492,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
+      <MapView
+        ref={mapRef} // Asignar la referencia al mapa
+        style={styles.map}
+        initialRegion={{
+          latitude: 40.4637,
+          longitude: -3.7492,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+        {locationsList.map((location, index) => (
+          <Marker
+            key={index}
+            coordinate={{ latitude: location.latitude, longitude: location.longitude }}
+            onPress={() => {
+              console.log('pin clicked: ' + videosList[index].Title);
+              setCurrentIndex(index);
+            }}
           >
-            
-          {locationsList.map((location, index) => (
-            <Marker
-              key={index}
-              coordinate={{ latitude: location.latitude, longitude: location.longitude }}
-              onPress={() => {
-                console.log('pin clicked: ' + videosList[index].Title);
-                setCurrentIndex(index);
-            
-              }}
-              >
-               
-                <Image
-                    source={markerPin}
-                    style={{ width: 30, height: 38 }} // Ajusta los valores según tus necesidades
-                  />
-                        {/*  {videosList[index].Title} */}
-                <Callout  style={styles.callout}onPress={() => onTitlePress({navigation})}>
-                  <View>
-                      <Text>{videosList[index].Title}</Text>
-                  </View>
-                </Callout>
-         
-            </Marker>                   
-          ))}        
+            <Image
+              source={markerPin}
+              style={{ width: 30, height: 38 }}
+            />
+            <Callout style={styles.callout} onPress={() => onTitlePress({ navigation })}>
+              <View>
+                <Text>{videosList[index].Title}</Text>
+              </View>
+            </Callout>
+          </Marker>
+        ))}
       </MapView>
       {/* Botón para centrar el mapa en la ubicación actual */}
       <TouchableOpacity style={styles.centerButton} onPress={getCurrentLocation}>
-        <Text style={styles.centerButtonText}>Centrar Mapa</Text>
-      </TouchableOpacity>
+      <MaterialCommunityIcons name="crosshairs-gps" size={50} color="#070504" />
+    </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   mapContainer: {
-    alignItems: 'center',  // En lugar de "align"
+    alignItems: 'center',
     flex: 1,
     width: '95%',
     height: '98%',
     marginLeft: '2.5%',
     marginTop: '2%',
     padding: 20,
-    borderRadius: 15, // Ajusta este valor para cambiar la curvatura de las esquinas
+    borderRadius: 15,
     borderWidth: 0,
-    overflow: 'hidden', // Importante para que las esquinas redondeadas se muestren correctamente
+    overflow: 'hidden',
   },
   
   map: {
     width: width,
     height: height,
     position: 'absolute',
-  //  alignItems: 'center',
   },
   titleContainer: {
-    //position: 'absolute',
     backgroundColor: 'black',
     opacity: 0.7,
     width: '100%',
@@ -150,45 +150,31 @@ const styles = StyleSheet.create({
     borderColor: 'white',
   },
   title: {
-   // padding: 15,
     justifyContent: 'center',
     color: 'white',
   },
   btnContainer: {
-    //position: 'absolute',
     flexDirection: 'row',
-   // backgroundColor: 'blue',
     padding: 2,
     justifyContent: 'space-evenly',
     width: '80%',
-
   },
   closeContainer: {
-    //backgroundColor: 'red',
     padding: 5,
-
   },
   thumbsContainer: {
-   // backgroundColor: 'green',
     padding: 5,
-
   },
-  TouchableOpacity: {
-   // backgroundColor: 'blue'
-  },
+  TouchableOpacity: {},
   callout: {
-    //backgroundColor: 'blue',
     overflow: 'visible',
     flex: 1,
     width: '400%',
-   
-    
   },
   centerButton: {
     position: 'absolute',
     bottom: 16,
     right: 16,
-    backgroundColor: '#3498db',
     padding: 10,
     borderRadius: 5,
   },
@@ -196,7 +182,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-
 });
 
 export default MapComponent;
