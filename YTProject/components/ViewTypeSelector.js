@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, Image, StyleSheet } from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
+import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SuggestionBox from './SuggestionBox'; // Importa el componente de la caja de sugerencias
@@ -40,6 +41,10 @@ const ViewTypeSelector = ({ onToggle, videosList }) => {
     setSuggestions([]);
   };
 
+const ViewTypeSelector = ({ onToggle }) => {
+
+  // Opciones para el interruptor (Mapa y Lista)
+
   const options = [
     { label: 'Mapa', value: 'Map' },
     { label: 'Lista', value: 'List' },
@@ -72,11 +77,6 @@ const ViewTypeSelector = ({ onToggle, videosList }) => {
 
   return (
     <View style={styles.selector}>
-      {/* Imagen de la lupa a la izquierda */}
-      <View style={styles.icon}>
-        <MaterialIcons name="search" size={43} color="white" onPress={enterSearchMode} />
-      </View>
-
       {/* Interruptor central */}
       <SwitchSelector
         options={options}
@@ -88,11 +88,6 @@ const ViewTypeSelector = ({ onToggle, videosList }) => {
         selectedTextStyle={styles.selectedSwitchText}   
         style={styles.switchContainer}
       />
-
-      {/* Imagen de los filtros a la derecha */}
-      <View style={styles.icon}>
-        <MaterialIcons name="filter-alt" size={40} color="white" />
-      </View>
     </View>
   );
 };
@@ -100,40 +95,16 @@ const ViewTypeSelector = ({ onToggle, videosList }) => {
 const styles = StyleSheet.create({
   selector: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    //justifyContent: 'space-between',
+    alignItems: 'center', // Centrar verticalmente las imágenes
     backgroundColor: '#1B1212',
     paddingHorizontal: 16,
-    height: '100%',
-    zIndex: 999,
+    //height: '100%',
   },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    height: '100%',
-  },
-  textContainer: {
-    alignItems: 'left',
-    backgroundColor: 'white',
-    paddingHorizontal: 16,
-    marginTop: 10,
-    marginBottom: 10,
-    marginRight: 10,
-    height: '50%',
-    width: '75%',
-    borderRadius: 50,
-    position: 'relative',
-  },
-  icon: {
-    width: 60,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+ 
   switchContainer: {
-    flex: 1,
-    minWidth: 200,
+  //  flex: 1, // Take up remaining space
+    minWidth: 250, // Set minimum width as needed
   },
   switchText: {
     color: 'black',
@@ -150,5 +121,6 @@ const styles = StyleSheet.create({
     marginLeft: 0,
   },
 });
+}
 
 export default ViewTypeSelector;

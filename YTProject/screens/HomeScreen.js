@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput } from 'react-native';
 import ViewTypeSelector from '../components/ViewTypeSelector';
 import NavigationComponent from '../components/NavigationComponent';
 import NavBar from '../components/NavBar';
-import Card from '../components/Card'
+import Card from '../components/Card';
 import Tags from '../components/Tags';
 import MapView from 'react-native-maps';
 import Header from '../components/Header'; // Importa el componente Header
@@ -17,20 +17,49 @@ import { db } from '../firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import TouchableCard from '../components/TouchableCard';
 import { loadFavorites, saveFavorites } from '../storage/AsyncStorageHelper';
-
-
+import VideoManager from '../utils/VideoManager';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/FontAwesome';
 
 const HomeScreen = ({ navigation }) => {
   const [viewType, setViewType] = useState('Map'); // Estado para controlar el tipo de vista
   const [videosList, setVideosList] = useState([]);
   const [tagsList, setTagsList] = useState([]);
-  const [refresh, setRefresh] = useState("");
+  
+  const [searchIsPressed, setSearchIsPressed] = useState(false);
+  const [filterIsPressed, setFilterIsPressed] = useState(false);
+  const [tagPressed, setTagPressed] = useState(false)
+  const [selectedTags, setSelectedTags] = useState([]);
 
-
-  const onPress = ({navigation }) => {
-    navigation.navigate('Details');
-    console.log('card clicked');
+  const handleSearchPress = () => {
+    setSearchIsPressed(!searchIsPressed); // Cambia el estado al presionar
   };
+
+  const handleFilterPress = () => {
+    setFilterIsPressed(!filterIsPressed);
+  };
+
+  const handleTagPress = (index) => {
+    // Verificar si el tag ya está seleccionado
+    if (selectedTags.includes(index)) {
+      // Si está seleccionado, quitarlo de la lista
+      setSelectedTags(selectedTags.filter((tagIndex) => tagIndex !== index));
+    } else {
+      // Si no está seleccionado, agregarlo a la lista
+      setSelectedTags([...selectedTags, index]);
+    }
+  };
+
+  const onClosePress = () => {
+    console.log("close");
+  };
+
+  const onPress = (item, index) => {
+    navigation.navigate('Details', { videoData: item, tagsIndex: index, tagsList });
+    console.log('card clicked');
+  };   
+ 
 
   const toggleViewType = (newType) => {
     if (newType !== viewType) {
@@ -38,80 +67,178 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  const recieveData = (data) => {
-    //use states videoslist tagslist
+  const recieveVideoData = (data) => {
+    setVideosList(data)
   }
+  const recieveTagsData = (data) => {
+    setTagsList(data)
+  }
+
   
-  useEffect(() => { // Funció que es crida al començar. Ve a ser un OnCreate d'Android/start()
-    // Función para obtener todos los usuarios
+  useEffect(() => { 
+    VideoManager.subscribe(recieveVideoData, 1); 
+    VideoManager.subscribe(recieveTagsData, 2);
+
     console.log("He entrat a home screen");
-   // videoManager.subscribe(recieveData);
-
-    
-    const fetchVideos = async () => {
-      try {
-        await saveFavorites(["2oAQI9dgFoopsQr0l6c4", "JCcOPruLIv7vbfriihLw"]);
-        let favorites = await loadFavorites();
-        //console.log("The favorites are: ", favorites);
-
-        console.log(db);
-
-        const videosCol = collection(db, 'Videos'); // Accede a la colección 'Users'
-        const videoSnapshot = await getDocs(videosCol); // Obtiene todos los documentos
-        const videosListData = videoSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setVideosList(videosListData);
-        
   
-
-        const tagsCol = collection(db, "Tags");
-        const tagsSnapshot = await getDocs(tagsCol);
-        const tagsListData = tagsSnapshot.docs.map(doc => doc.data());
-        setTagsList(tagsListData[0].Values);
-        setRefresh(" ");  
-    
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  
-    fetchVideos(); // Llama a la función al inicio
-    console.log('VIDEOS LIST home: ', videosList);
-    console.log('TAG LIST: ', tagsList)
-  }, [setVideosList]); // Ensure the effect is dependent on setVideosList to avoid unnecessary re-renders
+}, []);
 
 
   return  (
     <View style={styles.container}>
-      <View style={styles.header}>
+      {!searchIsPressed && !filterIsPressed ? (
         <Header imageSource={logo} />
-      </View>
-      <View style={styles.map}>
-        <ViewTypeSelector onToggle={toggleViewType} selected={viewType} videosList={videosList}/>
+      ) : (
+        <View style={{ height: '20%' }} />
+      )}
+      
+      <View style={styles.rowContainer}>
+          <TouchableOpacity onPress={handleSearchPress}>
+              <View style={styles.icon}>
+                  <MaterialIcons name="search" size={43} style={{ color: searchIsPressed ? 'orange' : 'white' }} />
+              </View>
+          </TouchableOpacity>
+          <View>
+                <ViewTypeSelector onToggle={toggleViewType} selected={viewType}/>
+          </View>
+      {/* Imagen de los filtros a la derecha */}
+          <TouchableOpacity onPress={handleFilterPress}>
+              <View style={styles.icon}>
+                  <MaterialIcons name="filter-alt" size={40}  style={{ color: filterIsPressed ? 'orange' : 'white' }}/>
+              </View>
+          </TouchableOpacity>
       </View>
 
+
+      {searchIsPressed &&(
+        <View style={{position: 'absolute', flex: 1, width: '100%', alignItems: 'center'}}>
+          <View style={styles.searchContainer}>
+            <TextInput
+                placeholder="Escribe aquí lo que deseas buscar"
+                style={styles.input}
+                // Otros atributos y eventos según tus necesidades
+              />
+              <View style={styles.btnContainer}>
+                <View style={styles.closeContainer}>
+                  <TouchableOpacity style={styles.TouchableOpacity} onPress={onClosePress}>
+                    <FontAwesome padding={2} name="close" size={30} color='red' />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.thumbsContainer}>
+                  <TouchableOpacity style={styles.TouchableOpacity} /* onPress={() => onCheckPress({ navigation })}*/>
+                    <FontAwesome padding={2} name="check" size={30} color='green' />
+                  </TouchableOpacity>
+                </View>
+              </View>
+          </View>        
+        </View>
+      )}
+
+
+      {filterIsPressed && (
+      <View style={{position: 'absolute', flex: 1, width: '100%', alignItems: 'center'}}>
+        <View style={styles.filterContainer}>
+          <ScrollView style={{flexDirection: 'column'}}>
+            <View style={styles.tagsContainer}>
+              {tagsList.map((tag, index) => (
+                <TouchableOpacity key={index} onPress={() => handleTagPress(index)}>
+                  <View
+                    key={index}
+                    style={[
+                      styles.tagContainer,
+                      {
+                        backgroundColor: selectedTags.includes(index) ? 'black' : 'grey',
+                      },
+                    ]}
+                  >
+                    <Text style={styles.tagText}>{tag}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+              {tagsList.map((tag, index) => (
+                <TouchableOpacity key={index} onPress={() => handleTagPress(index)}>
+                  <View
+                    key={index}
+                    style={[
+                      styles.tagContainer,
+                      {
+                        backgroundColor: selectedTags.includes(index) ? 'black' : 'grey',
+                      },
+                    ]}
+                  >
+                    <Text style={styles.tagText}>{tag}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <View style={styles.filterOptions}>
+              <TouchableOpacity>
+                  <View style={styles.optionContainer}>
+                      <Text style={styles.optionText}>Aceptar selección</Text>
+                  </View>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                  <View style={styles.optionContainer}>
+                      <Text style={styles.optionText}>Borrar selección</Text>
+                  </View>
+              </TouchableOpacity>
+            </View>
+      
+          </ScrollView>
+        </View>
+      </View>
+      )}
+      {/*
+
+       <Tags tags={tagsList}></Tags>
+      
+      {tagsList.map((tag, index) => (
+          <TouchableOpacity key={index} style={styles.tagContainer}>
+              <Text style={styles.tagText}>{tag}</Text>
+          </TouchableOpacity>
+           ))}
+      </View>
+       <View style={styles.map}>
+         {/* Imagen de la lupa a la izquierda 
+        <TouchableOpacity onPress={handlePress}>
+          <View style={styles.icon}>
+            <MaterialIcons name="search" size={43} style={{ color: isPressed ? 'orange' : 'white' }} />
+          </View>
+        </TouchableOpacity>
+        {isPressed && (
+          <View>
+            <Text>search</Text>
+          </View>
+        )}
+          <ViewTypeSelector onToggle={toggleViewType} selected={viewType}/>
+      </View>*/}
       <View style={{flex: 1}}>
       {viewType === 'Map' && videosList && videosList.length > 0 ? 
           (
-            <MapComponent videosList={videosList} navigation={navigation}/> // Usa el componente MapComponent
+            <MapComponent videosList={videosList} navigation={navigation}/> 
           ) : 
           (
             <ScrollView contentContainerStyle={styles.scrollContainer}>
               {videosList && tagsList.length > 0 ? (
                 videosList.map((item, index) => (
-                      <TouchableCard  onPress={() => onPress({ navigation })} key={index} title={item.Title} tags={item.Tags} tagsList={tagsList}
-                      desc={item.Description} sourceImg={item.Youtube}/>
+                  <TouchableCard
+                    onPress={() => onPress(item, index)} // Pass the entire video data
+                    key={index}
+                    title={item.Title}
+                    tags={item.Tags}
+                    tagsList={tagsList}
+                    desc={item.Description}
+                    sourceImg={item.Youtube}
+                  />
                 ))
               ) : (
-                // Mostrar un mensaje de carga o un indicador de vacío
                 <Text style={styles.titulo}>Cargando...</Text>
               )}
-          
             </ScrollView>
           )
         }
       </View>
-      <View style={styles.footer}></View>
-      <NavBar Navbar navigation={navigation} videosList={videosList} />
+          <NavBar Navbar navigation={navigation} videosList={videosList} />
     </View>
   );  
 }

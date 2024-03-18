@@ -8,7 +8,6 @@ import AboutScreen from './screens/AboutScreen';
 import PollScreen from './screens/PollScreen';
 import FavoritesScreen from './screens/FavoritesScreen';
 
-
 const Stack = createStackNavigator();
 
 const App = () => {

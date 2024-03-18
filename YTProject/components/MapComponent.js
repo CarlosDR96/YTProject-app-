@@ -1,19 +1,66 @@
 import React, { useEffect, useState }from 'react';
-import { Dimensions, StyleSheet, View, Image, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import MapView, { Marker} from 'react-native-maps';
-
+import { Dimensions, StyleSheet, View, Image, TouchableOpacity, Alert, Text } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import * as Location from 'expo-location';
+import MapView, { Callout, Marker} from 'react-native-maps';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import markerPin from '../img/Pin.png'
 
 const { width, height } = Dimensions.get('window');
 
-const MapComponent = ({videosList, navigation}) => {
+const MapComponent = ({ videosList, navigation }) => {
   const [locationsList, setLocationsList] = useState([]);
-  console.log("Title " + videosList[0].Title);
+  const [currentIndex, setCurrentIndex] = useState(null);
 
-  const onPress = ({navigation }) => {
-    navigation.navigate('Details');
-    console.log('card clicked');
+  const [currentLocation, setCurrentLocation] = useState(null);
+
+  const onMarkerPress = (videoData) => {
+    navigation.navigate('Details', { videoData });
   };
+
+  const getCurrentLocation = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      setCurrentLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+    } catch (error) {
+      console.error('Error getting current location:', error);
+    }
+  };
+
+  const onTitlePress = ({navigation}) => {
+    Alert.alert(
+      'Confirmación',
+      `¿Quieres ver los detalles del video?`,
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Sí',
+          onPress: () => {
+            // Navegar a la pantalla de detalles aquí
+            console.log(currentIndex);
+            const videoData = videosList[currentIndex];
+            navigation.navigate('Details', { videoData });
+    
+          },
+        },
+      ],
+    );
+
+    };
 
   useEffect(() => {
     const filteredLocations = videosList
@@ -21,6 +68,9 @@ const MapComponent = ({videosList, navigation}) => {
       .map((video) => video.Geopoint);
 
     setLocationsList(filteredLocations);
+
+    // Obtener la ubicación actual al cargar el componente
+    getCurrentLocation();
   }, [videosList]);
 
   return (
@@ -34,59 +84,119 @@ const MapComponent = ({videosList, navigation}) => {
             longitudeDelta: 0.0421,
           }}
           >
+            
           {locationsList.map((location, index) => (
             <Marker
               key={index}
               coordinate={{ latitude: location.latitude, longitude: location.longitude }}
-              title={videosList[index].Title}
               onPress={() => {
-                // Mostrar una alerta antes de navegar a la pantalla de detalles
-                Alert.alert(
-                  'Confirmación',
-                  `¿Quieres ver los detalles del video "${videosList[index].Title}"?`,
-                  [
-                    {
-                      text: 'Cancelar',
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'Sí',
-                      onPress: () => {
-                        // Navegar a la pantalla de detalles aquí
-                        navigation.navigate('Details', { videoId: videosList[index].id });
-                      },
-                    },
-                  ],
-                );
+                console.log('pin clicked: ' + videosList[index].Title);
+                setCurrentIndex(index);
+            
               }}
               >
+               
                 <Image
-                    source={require('../img/Pin.png')}
+                    source={markerPin}
                     style={{ width: 30, height: 38 }} // Ajusta los valores según tus necesidades
                   />
-            </Marker>
-          ))}
+                        {/*  {videosList[index].Title} */}
+                <Callout  style={styles.callout}onPress={() => onTitlePress({navigation})}>
+                  <View>
+                      <Text>{videosList[index].Title}</Text>
+                  </View>
+                </Callout>
+         
+            </Marker>                   
+          ))}        
       </MapView>
-      </View>
+      {/* Botón para centrar el mapa en la ubicación actual */}
+      <TouchableOpacity style={styles.centerButton} onPress={getCurrentLocation}>
+        <Text style={styles.centerButtonText}>Centrar Mapa</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   mapContainer: {
-    align: 'center',
+    alignItems: 'center',  // En lugar de "align"
     flex: 1,
     width: '95%',
-    height: '100%',
+    height: '98%',
     marginLeft: '2.5%',
+    marginTop: '2%',
     padding: 20,
     borderRadius: 15, // Ajusta este valor para cambiar la curvatura de las esquinas
     borderWidth: 0,
     overflow: 'hidden', // Importante para que las esquinas redondeadas se muestren correctamente
   },
+  
   map: {
     width: width,
     height: height,
     position: 'absolute',
+  //  alignItems: 'center',
   },
+  titleContainer: {
+    //position: 'absolute',
+    backgroundColor: 'black',
+    opacity: 0.7,
+    width: '100%',
+    padding: 10,
+    alignItems: 'center',
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  title: {
+   // padding: 15,
+    justifyContent: 'center',
+    color: 'white',
+  },
+  btnContainer: {
+    //position: 'absolute',
+    flexDirection: 'row',
+   // backgroundColor: 'blue',
+    padding: 2,
+    justifyContent: 'space-evenly',
+    width: '80%',
+
+  },
+  closeContainer: {
+    //backgroundColor: 'red',
+    padding: 5,
+
+  },
+  thumbsContainer: {
+   // backgroundColor: 'green',
+    padding: 5,
+
+  },
+  TouchableOpacity: {
+   // backgroundColor: 'blue'
+  },
+  callout: {
+    //backgroundColor: 'blue',
+    overflow: 'visible',
+    flex: 1,
+    width: '400%',
+   
+    
+  },
+  centerButton: {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+    backgroundColor: '#3498db',
+    padding: 10,
+    borderRadius: 5,
+  },
+  centerButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+
 });
+
 export default MapComponent;
