@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableWithoutFeedback, Modal, TouchableOpacity, } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableWithoutFeedback, Modal, TouchableOpacity } from 'react-native';
 import logo from '../img/SezarBlueLogo.png';
 import Header from '../components/Header';
 import NavBar from '../components/NavBar';
@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import CarouselDef from '../components/CarouselDef';
 import VideoManager from '../utils/VideoManager';
-
+import { saveFavorites, loadFavorites, resetVariable } from '../storage/AsyncStorageHelper'; // Importa tus funciones AsyncStorageHelper
 
 const DetailsScreen = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -18,28 +18,53 @@ const DetailsScreen = ({ route, navigation }) => {
   const [tagsList, setTagsList] = useState([]);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isFavPressed, setIsFavPressed] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+  const [videosList, setVideosList] = useState([]);
 
-  // Create a new array of filtered tags based on positions in videoData.Tags
-  const filteredTags = videoData.Tags.map((tagIndex) =>
-    tagsList && tagsList.length > tagIndex ? tagsList[tagIndex] : null
-  );
-
-  const handleFavPress = () => {
-    setIsFavPressed(!isFavPressed);
+  const handleFavPress = async () => {
+    if (isFavPressed) {
+      // Si ya está marcado como favorito, lo eliminamos solo del array de favoritos
+      const updatedFavorites = favorites.filter((favId) => favId !== videoData.id);
+      await saveFavorites(updatedFavorites);
+      setIsFavPressed(false);
+    } else {
+      // Si no está marcado, lo agregamos
+      const newFavorites = [...favorites, videoData.id]; // Suponiendo que videoData tiene un campo id
+      await saveFavorites(newFavorites);
+      setIsFavPressed(true);
+    }
   };
 
-  const handleImagePress = () => {
-    setModalVisible(!modalVisible);
+  const recieveVideoData = (data) => {
+    setVideosList(data);
   };
 
   const recieveTagsData = (data) => {
     setTagsList(data)
   }
+  
 
-  useEffect(() => { 
+  // Función para cargar favoritos al montar el componente
+  useEffect(() => {
+    VideoManager.subscribe(recieveVideoData, 1);
     VideoManager.subscribe(recieveTagsData, 2);
-
+    const fetchFavorites = async () => {
+      const loadedFavorites = await loadFavorites();
+      setFavorites(loadedFavorites);
+      // Verifica si el video actual está en favoritos y establece el estado en consecuencia
+      setIsFavPressed(loadedFavorites.includes(videoData.id));
+    };
+    fetchFavorites();
   }, []);
+
+  // Crear un nuevo array de tags filtrados basados en las posiciones en videoData.Tags
+  const filteredTags = videoData.Tags.map((tagIndex) =>
+    tagsList && tagsList.length > tagIndex ? tagsList[tagIndex] : null
+  );
+
+  const handleImagePress = () => {
+    setModalVisible(!modalVisible);
+  };
 
   return (
     <View style={styles.container}>
@@ -60,8 +85,8 @@ const DetailsScreen = ({ route, navigation }) => {
           </TouchableWithoutFeedback>
         </View>
       </Modal>
-        
-          <Header imageSource={logo} />
+
+      <Header imageSource={logo} />
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{videoData.Title}</Text>
@@ -71,7 +96,7 @@ const DetailsScreen = ({ route, navigation }) => {
         <Text style={styles.detailText}>{videoData.Youtube}</Text>
         <View style={styles.Tags}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <Tags tags={filteredTags} /> 
+            <Tags tags={filteredTags} />
           </ScrollView>
         </View>
         <YoutubeVideo videoUrl={`https://www.youtube.com/embed/${videoData.Youtube}`} />
@@ -89,12 +114,12 @@ const DetailsScreen = ({ route, navigation }) => {
           />
         </TouchableWithoutFeedback>
       </View>
-        <View style={styles.navigation}>
-          <NavBar navigation={navigation} />
-        </View>
+      <View style={styles.navigation}>
+        <NavBar navigation={navigation} />
       </View>
-    );
-  };
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -122,7 +147,7 @@ const styles = StyleSheet.create({
   heartIcon: {
     width: 30,
     height: 30,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   detailText: {
     fontSize: 16,
@@ -135,33 +160,32 @@ const styles = StyleSheet.create({
     right: 20,
     alignItems: 'center',
   },
-
   favBackground: {
-    width: 60, // Ajusta el ancho del círculo según sea necesario
-    height: 60, // Ajusta la altura del círculo según sea necesario
-    backgroundColor: '#413F3F', // Gris transparente
-    borderRadius: 30, // Ajusta el radio según sea necesario para hacer un círculo
+    width: 60,
+    height: 60,
+    backgroundColor: '#413F3F',
+    borderRadius: 30,
     position: 'absolute',
     bottom: 0,
-    opacity: 0.7
+    opacity: 0.7,
   },
   heartIcon: {
-    width: 50, // Ajusta el ancho del ícono según sea necesario
-    height: 50, // Ajusta la altura del ícono según sea necesario
+    width: 50,
+    height: 50,
     resizeMode: 'contain',
-    zIndex: 1, // Asegura que el ícono esté por encima del círculo
+    zIndex: 1,
     opacity: 0.7,
     margin: 2,
   },
   Tags: {
     marginTop: 20,
     alignItems: 'center',
-    flexDirection: 'row', // Add this line
-    justifyContent: 'space-between', // Add this line
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   descriptionContainer: {
     marginTop: 20,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   description: {
     fontSize: 18,
@@ -177,7 +201,6 @@ const styles = StyleSheet.create({
   navigation: {
     height: '10%',
   },
-
   carouselImage: {
     width: 300,
     height: 200,
@@ -201,14 +224,14 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)', // fondo oscuro
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: 'white', // color de fondo del contenido del modal
-    width: '80%', // ajusta el ancho del modal según sea necesario
-    height: '80%', // ajusta la altura del modal según sea necesario
+    backgroundColor: 'white',
+    width: '80%',
+    height: '80%',
     borderRadius: 10,
     overflow: 'hidden',
   },
@@ -217,7 +240,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: '100%',
     height: '100%',
-  }
+  },
 });
 
 export default DetailsScreen;
