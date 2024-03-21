@@ -8,10 +8,11 @@ import markerPin from '../img/Pin.png';
 
 const { width, height } = Dimensions.get('window');
 
-const MapComponent = ({ videosList, navigation }) => {
+const MapComponent = ({ videosList, navigation, selectedTags }) => {
   const [locationsList, setLocationsList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
+  const [hasCentered, setHasCentered] = useState(false);
 
   const mapRef = useRef(null); // Referencia al mapa
 
@@ -35,49 +36,40 @@ const MapComponent = ({ videosList, navigation }) => {
         longitudeDelta: 0.0421,
       });
 
-      // Centrar el mapa en la ubicación actual
-      mapRef.current.animateToRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      });
+      // Solo centra el mapa en la ubicación actual si aún no se ha centrado
+      if (!hasCentered) {
+        mapRef.current.animateToRegion({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
+        setHasCentered(true);
+      }
     } catch (error) {
       console.error('Error getting current location:', error);
     }
   };
 
-  const onTitlePress = ({navigation}) => {
-    Alert.alert(
-      'Confirmación',
-      `¿Quieres ver los detalles del video?`,
-      [
-        {
-          text: 'Cancelar',
-          style: 'cancel',
-        },
-        {
-          text: 'Sí',
-          onPress: () => {
-            console.log(currentIndex);
-            const videoData = videosList[currentIndex];
-            navigation.navigate('Details', { videoData });
-          },
-        },
-      ],
-    );
-  };
-
   useEffect(() => {
     const filteredLocations = videosList
       .filter((video) => video.Geopoint !== null && video.Geopoint !== undefined)
+      .filter((video) => {
+        // Si no hay tags seleccionados, muestra todos los videos
+        if (selectedTags.length === 0) {
+          return true;
+        } else {
+          // Si hay tags seleccionados, verifica si el video contiene todos esos tags
+          return selectedTags.every(tag => video.Tags.includes(tag));
+        }
+      })
       .map((video) => video.Geopoint);
 
     setLocationsList(filteredLocations);
 
     // Obtener la ubicación actual al cargar el componente
     getCurrentLocation();
-  }, [videosList]);
+  }, [videosList, selectedTags]);
 
   return (
     <View style={styles.mapContainer}>
@@ -96,7 +88,6 @@ const MapComponent = ({ videosList, navigation }) => {
             key={index}
             coordinate={{ latitude: location.latitude, longitude: location.longitude }}
             onPress={() => {
-              console.log('pin clicked: ' + videosList[index].Title);
               setCurrentIndex(index);
             }}
           >
@@ -104,9 +95,9 @@ const MapComponent = ({ videosList, navigation }) => {
               source={markerPin}
               style={{ width: 30, height: 38 }}
             />
-            <Callout style={styles.callout} onPress={() => onTitlePress({ navigation })}>
+            <Callout style={styles.callout} onPress={() => onMarkerPress(videosList.find(video => video.Geopoint === location))}>
               <View>
-                <Text>{videosList[index].Title}</Text>
+                <Text>{videosList.find(video => video.Geopoint === location)?.Title}</Text>
               </View>
             </Callout>
           </Marker>
@@ -114,11 +105,12 @@ const MapComponent = ({ videosList, navigation }) => {
       </MapView>
       {/* Botón para centrar el mapa en la ubicación actual */}
       <TouchableOpacity style={styles.centerButton} onPress={getCurrentLocation}>
-      <MaterialCommunityIcons name="crosshairs-gps" size={50} color="#070504" />
-    </TouchableOpacity>
+        <MaterialCommunityIcons name="crosshairs-gps" size={50} color="#070504" />
+      </TouchableOpacity>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   mapContainer: {

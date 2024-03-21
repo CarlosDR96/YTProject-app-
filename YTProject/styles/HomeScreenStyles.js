@@ -122,7 +122,13 @@ const styles = StyleSheet.create({
   },
   optionText: {
     color: 'white',
-  }
+  },
+  orangeLine: {
+    height: 1, // Altura de la línea
+    backgroundColor: 'orange', // Color de la línea
+    width: '90%', // Ancho de la línea
+    marginVertical: 5, // Margen vertical para separar la línea del texto y los botones
+  },  
 
 });
 
