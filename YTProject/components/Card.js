@@ -2,28 +2,34 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import Tags from './Tags';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const Card = ({ onPress, titulo, tags, descripcion, imagenFuente }) => {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.container}>
-        <View style={styles.titleContainer}>
+
           <TouchableOpacity styles={styles.touchable} onPress={onPress}>
-            <Text style={styles.titulo}   numberOfLines={3} ellipsizeMode="tail">{titulo}</Text>
+          <View style={styles.titleContainer}>
+            <View style={{width: '90%'}}>
+              <Text style={styles.titulo}   numberOfLines={3} ellipsizeMode="tail">{titulo}</Text>
+            </View>
+            <View style={{justifyContent: 'center', left: 5}}>
+              <MaterialIcons padding={2} name="keyboard-arrow-right" size={30} color='white' />
+            </View>
+            </View>
           </TouchableOpacity>
-          </View>
+   
                   {/* Envuelve Tags con ScrollView horizontal */}
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scroll}>
-                <Tags tags={tags} />
-              </ScrollView>
-          
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scroll}>
+            <Tags tags={tags} />
+        </ScrollView>
               {/* Contenedor adicional para la descripción */}
            <View style={styles.contenidoContainer}>
             <View style={styles.descripcionContainer}>
                 <Text style={styles.descripcion} numberOfLines={4} ellipsizeMode="tail">
                 {descripcion}
                 </Text>
-                         
             </View>
             <View style={styles.imagenContainer}>
               <Image style={styles.imagen} source={{ uri: imagenFuente }} />
@@ -58,6 +64,7 @@ const styles = StyleSheet.create({
   },
   touchable: {
   //  backgroundColor: 'green',
+  
   },
   imagenContainer: {
     width: '30%',
@@ -82,7 +89,8 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     width: '100%',
-   // backgroundColor: 'blue',
+  //  backgroundColor: 'blue',
+    flexDirection: 'row',
 
   },
   titulo: {

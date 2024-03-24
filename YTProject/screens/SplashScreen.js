@@ -3,13 +3,13 @@ import { View, Image, Text, StyleSheet, Animated, Easing } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Font from 'expo-font';
 import { Audio } from 'expo-av';
-import VideoManager from '../utils/VideoManager'
+import VideoManager from '../utils/VideoManager';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
   const [randomText, setRandomText] = useState('');
-  const heartBeatAnimation = new Animated.Value(1);
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const heartBeatAnimation = new Animated.Value(1);
 
   const textArray = [
     'Nos vamos para dentro a ver qué se cuece',
@@ -17,16 +17,7 @@ const SplashScreen = () => {
     'Fairy de pan', 'Me va a dar un Camilo Sesto', '¡Ahí va, qué rico!', 'Carta vista para sentencia',
   ];
 
-  const chooseRandomText = () => {
-    const randomIndex = Math.floor(Math.random() * textArray.length);
-    setRandomText(textArray[randomIndex]);
-  };
-
   useEffect(() => {
-    VideoManager.loadVideosData();
-    VideoManager.loadTagsData();
-    VideoManager.loadPollsData();
-
     const loadFonts = async () => {
       await Font.loadAsync({
         peanut: require('../assets/fonts/PeanutDonuts.ttf'),
@@ -35,12 +26,19 @@ const SplashScreen = () => {
     };
 
     loadFonts();
-    
+
+    VideoManager.loadVideosData();
+    VideoManager.loadTagsData();
+    VideoManager.loadPollsData();
+
+    const chooseRandomText = () => {
+      const randomIndex = Math.floor(Math.random() * textArray.length);
+      setRandomText(textArray[randomIndex]);
+    };
+
     chooseRandomText(); // Escoge un texto aleatorio al renderizar
 
     if (fontsLoaded) {
-      chooseRandomText();
-
       Animated.loop(
         Animated.sequence([
           Animated.timing(heartBeatAnimation, {
@@ -73,7 +71,7 @@ const SplashScreen = () => {
 
       playIntroAudio();
     }
-  }, [navigation, heartBeatAnimation, fontsLoaded]);
+  }, [navigation, fontsLoaded, textArray.length]);
 
   const randomRotation = Math.random() * 10 - 5;
 

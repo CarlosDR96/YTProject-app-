@@ -93,7 +93,6 @@ const DetailsScreen = ({ route, navigation }) => {
         </View>
         <Text style={styles.detailText}>{videoData.Restaurant}</Text>
         <Text style={styles.detailText}>{videoData.Address}</Text>
-        <Text style={styles.detailText}>{videoData.Youtube}</Text>
         <View style={styles.Tags}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <Tags tags={filteredTags} />
@@ -114,9 +113,7 @@ const DetailsScreen = ({ route, navigation }) => {
           />
         </TouchableWithoutFeedback>
       </View>
-      <View style={styles.navigation}>
         <NavBar navigation={navigation} />
-      </View>
     </View>
   );
 };
@@ -134,6 +131,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     backgroundColor: '#1B1212',
+    top: 5,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -153,6 +151,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 5,
     color: '#FFFFFF',
+    textAlign: 'justify',
+    bottom: 7,
   },
   favContainer: {
     position: 'absolute',
@@ -178,13 +178,14 @@ const styles = StyleSheet.create({
     margin: 2,
   },
   Tags: {
-    marginTop: 20,
+    marginTop: 10,
+    bottom: 7,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   descriptionContainer: {
-    marginTop: 20,
+    marginTop: 10,
     alignItems: 'center',
   },
   description: {
